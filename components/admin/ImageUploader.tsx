@@ -1,0 +1,79 @@
+"use client";
+
+import { useState, useRef } from "react";
+
+interface ImageUploaderProps {
+  images: string[];
+  onChange: (images: string[]) => void;
+}
+
+export default function ImageUploader({ images, onChange }: ImageUploaderProps) {
+  const [uploading, setUploading] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (data.url) {
+        onChange([...images, data.url]);
+      }
+    } catch {
+      console.error("Upload failed");
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  }
+
+  function removeImage(index: number) {
+    onChange(images.filter((_, i) => i !== index));
+  }
+
+  return (
+    <div>
+      <label className="text-sm font-medium text-gray-700 block mb-2">Images</label>
+      <div className="flex flex-wrap gap-3 mb-3">
+        {images.map((url, i) => (
+          <div key={i} className="relative w-24 h-24 rounded-lg overflow-hidden border">
+            <img src={url} alt="" className="w-full h-full object-cover" />
+            <button
+              type="button"
+              onClick={() => removeImage(i)}
+              className="absolute top-1 right-1 bg-red-500 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center cursor-pointer"
+            >
+              ×
+            </button>
+          </div>
+        ))}
+        {images.length === 0 && (
+          <div className="w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-400 text-sm">
+            No images
+          </div>
+        )}
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleUpload}
+        className="hidden"
+      />
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        disabled={uploading}
+        className="px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 disabled:opacity-50 cursor-pointer"
+      >
+        {uploading ? "Uploading..." : "Add Image"}
+      </button>
+    </div>
+  );
+}
