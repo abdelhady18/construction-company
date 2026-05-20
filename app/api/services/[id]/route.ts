@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -21,6 +22,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       order: body.order,
     },
   });
+  revalidatePath("/");
   return Response.json(service);
 }
 
@@ -32,5 +34,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
 
   const { id } = await params;
   await prisma.service.delete({ where: { id } });
+  revalidatePath("/");
   return Response.json({ success: true });
 }

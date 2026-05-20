@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   const services = await prisma.service.findMany({
@@ -25,5 +26,6 @@ export async function POST(req: NextRequest) {
       order: body.order || 0,
     },
   });
+  revalidatePath("/");
   return Response.json(service, { status: 201 });
 }
