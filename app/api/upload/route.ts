@@ -1,5 +1,4 @@
 import { NextRequest } from "next/server";
-import { put } from "@vercel/blob";
 
 export async function POST(req: NextRequest) {
   try {
@@ -10,29 +9,12 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: "No file provided" }, { status: 400 });
     }
 
-    const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.-]/g, "_")}`;
-
-    if (process.env.BLOB_READ_WRITE_TOKEN) {
-      const blob = await put(filename, file, { access: "public" });
-      return Response.json({ url: blob.url });
-    }
-
-    if (process.env.NODE_ENV !== "development") {
-      return Response.json(
-        { error: "BLOB_READ_WRITE_TOKEN not configured. Image uploads require Vercel Blob storage in production." },
-        { status: 501 }
-      );
-    }
-
     const buffer = Buffer.from(await file.arrayBuffer());
-    const { writeFile, mkdir } = await import("fs/promises");
-    const { join } = await import("path");
+    const base64 = buffer.toString("base64");
+    const mime = file.type || "image/jpeg";
+    const dataUrl = `data:${mime};base64,${base64}`;
 
-    const uploadDir = join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
-    await writeFile(join(uploadDir, filename), buffer);
-
-    return Response.json({ url: `/uploads/${filename}` });
+    return Response.json({ url: dataUrl });
   } catch (err) {
     console.error("Upload error:", err);
     return Response.json(
