@@ -39,7 +39,11 @@ export default function Navbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-gray-600 hover:text-primary transition-colors"
+                className={`text-sm font-medium transition-colors ${
+                  scrolled
+                    ? "text-gray-600 hover:text-primary"
+                    : "text-white/85 hover:text-white"
+                }`}
               >
                 {link.label}
               </a>
@@ -50,7 +54,9 @@ export default function Navbar() {
           </div>
 
           <button
-            className="md:hidden p-2 text-gray-600"
+            className={`md:hidden p-2 transition-colors ${
+              scrolled ? "text-gray-600" : "text-white/85"
+            }`}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
