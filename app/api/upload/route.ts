@@ -9,6 +9,13 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: "No file provided" }, { status: 400 });
     }
 
+    if (file.size > 512_000) {
+      return Response.json(
+        { error: "Image must be under 500 KB" },
+        { status: 400 }
+      );
+    }
+
     const buffer = Buffer.from(await file.arrayBuffer());
     const base64 = buffer.toString("base64");
     const mime = file.type || "image/jpeg";
