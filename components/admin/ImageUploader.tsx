@@ -9,6 +9,7 @@ interface ImageUploaderProps {
 
 export default function ImageUploader({ images, onChange }: ImageUploaderProps) {
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -16,6 +17,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
     if (!file) return;
 
     setUploading(true);
+    setError("");
     const formData = new FormData();
     formData.append("file", file);
 
@@ -24,9 +26,11 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
       const data = await res.json();
       if (data.url) {
         onChange([...images, data.url]);
+      } else {
+        setError(data.error || "Upload failed");
       }
     } catch {
-      console.error("Upload failed");
+      setError("Network error — upload failed");
     } finally {
       setUploading(false);
       if (inputRef.current) inputRef.current.value = "";
@@ -74,6 +78,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
       >
         {uploading ? "Uploading..." : "Add Image"}
       </button>
+      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
     </div>
   );
 }
