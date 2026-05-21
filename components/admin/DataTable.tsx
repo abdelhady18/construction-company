@@ -15,17 +15,17 @@ interface DataTableProps {
 
 export default function DataTable({ columns, data, onView, onDelete, onRowClick }: DataTableProps) {
   return (
-    <div className="overflow-x-auto bg-white rounded-xl shadow-sm">
+    <div className="overflow-x-auto bg-surface rounded-xl border border-border">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-gray-200 bg-gray-50">
+          <tr className="border-b border-border bg-background">
             {columns.map((col) => (
-              <th key={col.key} className="text-left px-6 py-3 font-semibold text-gray-600">
+              <th key={col.key} className="text-left px-6 py-3 font-semibold text-muted">
                 {col.label}
               </th>
             ))}
             {(onView || onDelete) && (
-              <th className="text-left px-6 py-3 font-semibold text-gray-600">Actions</th>
+              <th className="text-left px-6 py-3 font-semibold text-muted">Actions</th>
             )}
           </tr>
         </thead>
@@ -33,11 +33,11 @@ export default function DataTable({ columns, data, onView, onDelete, onRowClick 
           {data.map((row, idx) => (
             <tr
               key={row.id as string || idx}
-              className={`border-b border-gray-100 hover:bg-gray-50 ${onRowClick ? "cursor-pointer" : ""}`}
+              className={`border-b border-border hover:bg-background ${onRowClick ? "cursor-pointer" : ""}`}
               onClick={onRowClick ? () => onRowClick(row.id as string) : undefined}
             >
               {columns.map((col) => (
-                <td key={col.key} className="px-6 py-4 text-gray-700">
+                <td key={col.key} className="px-6 py-4 text-foreground">
                   {col.render ? col.render(row[col.key], row) : String(row[col.key] ?? "")}
                 </td>
               ))}
@@ -47,7 +47,7 @@ export default function DataTable({ columns, data, onView, onDelete, onRowClick 
                     {onView && (
                       <button
                         onClick={(e) => { e.stopPropagation(); onView(row.id as string); }}
-                        className="px-3 py-1.5 text-xs font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 cursor-pointer"
+                        className="px-3 py-1.5 text-xs font-medium text-accent bg-accent/10 rounded-lg hover:bg-accent/20 cursor-pointer"
                       >
                         View
                       </button>

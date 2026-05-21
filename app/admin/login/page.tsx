@@ -31,9 +31,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-        <h1 className="text-2xl font-bold text-primary text-center mb-6">Admin Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="bg-surface p-8 rounded-2xl shadow-lg border border-border w-full max-w-md">
+        <h1 className="text-2xl font-bold text-heading text-center mb-6">Admin Login</h1>
         <form onSubmit={handleSubmit} className="space-y-5">
           <Input label="Email" name="email" type="email" required placeholder="admin@buildco.com" />
           <Input label="Password" name="password" type="password" required placeholder="••••••••" />

@@ -41,7 +41,7 @@ export default function MessagesPage() {
   if (loading) {
     return (
       <div>
-        <h1 className="text-2xl font-bold text-primary mb-8">Messages</h1>
+        <h1 className="text-2xl font-bold text-heading mb-8">Messages</h1>
         <Skeleton className="h-64 w-full" />
       </div>
     );
@@ -62,7 +62,7 @@ export default function MessagesPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-primary mb-8">Messages</h1>
+      <h1 className="text-2xl font-bold text-heading mb-8">Messages</h1>
       {messages.length === 0 ? (
         <EmptyState title="No messages yet" description="Contact form submissions will appear here." />
       ) : (

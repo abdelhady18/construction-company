@@ -39,14 +39,14 @@ export default function MessageDetailModal({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg rounded-xl bg-white shadow-2xl"
+        className="w-full max-w-lg rounded-xl bg-surface shadow-2xl border border-border"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
-          <h2 className="text-lg font-bold text-primary">Message Details</h2>
+        <div className="flex items-center justify-between border-b border-border px-6 py-4">
+          <h2 className="text-lg font-bold text-heading">Message Details</h2>
           <button
             onClick={onClose}
-            className="cursor-pointer text-2xl leading-none text-gray-400 hover:text-gray-600"
+            className="cursor-pointer text-2xl leading-none text-muted hover:text-foreground"
           >
             &times;
           </button>
@@ -55,12 +55,12 @@ export default function MessageDetailModal({
         <div className="space-y-4 px-6 py-5">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Name</p>
-              <p className="mt-0.5 text-gray-900">{message.name}</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted">Name</p>
+              <p className="mt-0.5 text-foreground">{message.name}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Date</p>
-              <p className="mt-0.5 text-gray-900">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted">Date</p>
+              <p className="mt-0.5 text-foreground">
                 {new Date(message.createdAt).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "short",
@@ -71,17 +71,17 @@ export default function MessageDetailModal({
               </p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Email</p>
-              <p className="mt-0.5 break-all text-gray-900">{message.email}</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted">Email</p>
+              <p className="mt-0.5 break-all text-foreground">{message.email}</p>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Phone</p>
-              <p className="mt-0.5 text-gray-900">{message.phone || "—"}</p>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted">Phone</p>
+              <p className="mt-0.5 text-foreground">{message.phone || "—"}</p>
             </div>
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Status</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Status</p>
             <p className="mt-0.5">
               {message.read ? (
                 <span className="inline-block rounded-full bg-green-100 px-3 py-0.5 text-xs font-semibold text-green-700">
@@ -96,17 +96,17 @@ export default function MessageDetailModal({
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Message</p>
-            <p className="mt-1 whitespace-pre-wrap rounded-lg bg-gray-50 p-4 text-sm leading-relaxed text-gray-800">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted">Message</p>
+            <p className="mt-1 whitespace-pre-wrap rounded-lg bg-background p-4 text-sm leading-relaxed text-foreground border border-border">
               {message.message}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 border-t border-gray-200 px-6 py-4">
+        <div className="flex items-center justify-end gap-3 border-t border-border px-6 py-4">
           <button
             onClick={onClose}
-            className="cursor-pointer rounded-lg px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100"
+            className="cursor-pointer rounded-lg px-4 py-2 text-sm font-medium text-muted hover:bg-background"
           >
             Close
           </button>

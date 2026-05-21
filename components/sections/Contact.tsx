@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
+import { formatHoursDisplay } from "@/components/ui/BusinessHoursPicker";
 
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -199,7 +200,7 @@ export default function Contact() {
                       </div>
                       <div>
                         <p className="font-medium text-white text-sm">Hours</p>
-                        <p className="text-white/50 text-sm mt-0.5">{settings.contact_hours}</p>
+                        <p className="text-white/50 text-sm mt-0.5">{formatHoursDisplay(settings.contact_hours)}</p>
                       </div>
                     </div>
                   )}

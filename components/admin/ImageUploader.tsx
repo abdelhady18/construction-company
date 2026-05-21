@@ -43,10 +43,10 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
 
   return (
     <div>
-      <label className="text-sm font-medium text-gray-700 block mb-2">Images</label>
+      <label className="text-sm font-medium text-foreground block mb-2">Images</label>
       <div className="flex flex-wrap gap-3 mb-3">
         {images.map((url, i) => (
-          <div key={i} className="relative w-24 h-24 rounded-lg overflow-hidden border">
+          <div key={i} className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
             <img src={url} alt="" className="w-full h-full object-cover" />
             <button
               type="button"
@@ -58,7 +58,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
           </div>
         ))}
         {images.length === 0 && (
-          <div className="w-24 h-24 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center text-gray-400 text-sm">
+          <div className="w-24 h-24 rounded-lg border-2 border-dashed border-border flex items-center justify-center text-muted text-sm">
             No images
           </div>
         )}
@@ -74,7 +74,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
-        className="px-4 py-2 text-sm font-medium text-primary bg-primary/10 rounded-lg hover:bg-primary/20 disabled:opacity-50 cursor-pointer"
+        className="px-4 py-2 text-sm font-medium text-accent bg-accent/10 rounded-lg hover:bg-accent/20 disabled:opacity-50 cursor-pointer"
       >
         {uploading ? "Uploading..." : "Add Image"}
       </button>

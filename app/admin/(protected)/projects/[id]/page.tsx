@@ -59,7 +59,7 @@ export default function EditProjectPage() {
   if (!project) {
     return (
       <div>
-        <h1 className="text-2xl font-bold text-primary mb-8">Edit Project</h1>
+        <h1 className="text-2xl font-bold text-heading mb-8">Edit Project</h1>
         <Skeleton className="h-96 w-full max-w-2xl" />
       </div>
     );
@@ -67,13 +67,13 @@ export default function EditProjectPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-primary mb-8">Edit Project</h1>
+      <h1 className="text-2xl font-bold text-heading mb-8">Edit Project</h1>
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
         <Input label="Title" name="title" required defaultValue={project.title} />
         <Input label="Description" name="description" type="textarea" required defaultValue={project.description} />
         <Input label="Category" name="category" defaultValue={project.category || ""} />
         <ImageUploader images={images} onChange={setImages} />
-        <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+        <label className="flex items-center gap-2 text-sm font-medium text-foreground">
           <input type="checkbox" name="featured" defaultChecked={project.featured} className="rounded" />
           Featured project
         </label>

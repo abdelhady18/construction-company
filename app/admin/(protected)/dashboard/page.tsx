@@ -13,7 +13,7 @@ export default async function DashboardPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-primary">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-heading">Dashboard</h1>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <StatsCard title="Services" value={serviceCount} icon="🏗️" />
@@ -21,8 +21,8 @@ export default async function DashboardPage() {
         <StatsCard title="Messages" value={messageCount} icon="✉️" />
         <StatsCard title="Unread" value={unreadCount} icon="📬" />
       </div>
-      <div className="bg-white rounded-xl p-6 shadow-sm">
-        <h2 className="text-lg font-semibold text-primary mb-4">Quick Actions</h2>
+      <div className="bg-surface rounded-xl p-6 border border-border">
+        <h2 className="text-lg font-semibold text-heading mb-4">Quick Actions</h2>
         <div className="flex flex-wrap gap-4">
           <Button variant="primary" href="/admin/services/new">
             Add Service

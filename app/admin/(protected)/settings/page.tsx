@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
+import PhoneInput from "@/components/ui/PhoneInput";
+import EmailInput from "@/components/ui/EmailInput";
+import BusinessHoursPicker from "@/components/ui/BusinessHoursPicker";
 import Skeleton from "@/components/ui/Skeleton";
 
 const defaultSettings = {
@@ -18,7 +21,15 @@ const defaultSettings = {
   contact_address: "",
   contact_phone: "",
   contact_email: "",
-  contact_hours: "",
+  contact_hours: JSON.stringify([
+    { day: "Monday", open: "08:00", close: "18:00", closed: false },
+    { day: "Tuesday", open: "08:00", close: "18:00", closed: false },
+    { day: "Wednesday", open: "08:00", close: "18:00", closed: false },
+    { day: "Thursday", open: "08:00", close: "18:00", closed: false },
+    { day: "Friday", open: "08:00", close: "18:00", closed: false },
+    { day: "Saturday", open: "09:00", close: "13:00", closed: false },
+    { day: "Sunday", open: "09:00", close: "13:00", closed: true },
+  ]),
   footer_about: "",
 };
 
@@ -106,7 +117,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div>
-        <h1 className="text-2xl font-bold text-primary mb-8">Site Settings</h1>
+        <h1 className="text-2xl font-bold text-heading mb-8">Site Settings</h1>
         <Skeleton className="h-96 w-full" />
       </div>
     );
@@ -114,26 +125,52 @@ export default function SettingsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-primary mb-8">Site Settings</h1>
+      <h1 className="text-2xl font-bold text-heading mb-8">Site Settings</h1>
 
       <form onSubmit={handleSave} className="space-y-8">
         {sections.map((section) => (
-          <div key={section.key} className="rounded-xl bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-semibold text-primary mb-6">{section.label}</h2>
+          <div key={section.key} className="rounded-xl bg-surface p-6 border border-border">
+            <h2 className="text-lg font-semibold text-heading mb-6">{section.label}</h2>
             <div className="space-y-5">
-              {section.fields.map((field) => (
-                <div key={field.key}>
-                  <Input
-                    label={field.label}
-                    value={settings[field.key as keyof Settings]}
-                    onChange={(v) => setSettings({ ...settings, [field.key]: v })}
-                    type={field.type === "textarea" ? "textarea" : "text"}
-                  />
-                  <p className="mt-1 text-xs text-gray-400">
-                    Appears in: <span className="font-medium">{field.appears}</span>
-                  </p>
-                </div>
-              ))}
+              {section.fields.map((field) => {
+                const key = field.key as keyof Settings;
+                return (
+                  <div key={field.key}>
+                    {key === "contact_phone" ? (
+                      <PhoneInput
+                        label={field.label}
+                        value={settings[key]}
+                        onChange={(v) => setSettings({ ...settings, [key]: v })}
+                        required
+                      />
+                    ) : key === "contact_email" ? (
+                      <EmailInput
+                        label={field.label}
+                        value={settings[key]}
+                        onChange={(v) => setSettings({ ...settings, [key]: v })}
+                        required
+                      />
+                    ) : key === "contact_hours" ? (
+                      <BusinessHoursPicker
+                        label={field.label}
+                        value={settings[key]}
+                        onChange={(v) => setSettings({ ...settings, [key]: v })}
+                      />
+                    ) : (
+                      <Input
+                        label={field.label}
+                        value={settings[field.key as keyof Settings]}
+                        onChange={(v) => setSettings({ ...settings, [field.key]: v })}
+                        type={field.type === "textarea" ? "textarea" : "text"}
+                        required
+                      />
+                    )}
+                    <p className="mt-1 text-xs text-muted">
+                      Appears in: <span className="font-medium">{field.appears}</span>
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         ))}

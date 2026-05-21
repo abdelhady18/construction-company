@@ -16,7 +16,15 @@ export const defaultSettings = {
   contact_address: "123 Construction Ave, Building District, NY 10001",
   contact_phone: "+1 (555) 123-4567",
   contact_email: "info@buildco.com",
-  contact_hours: "Mon-Fri: 8:00 AM - 6:00 PM",
+  contact_hours: JSON.stringify([
+    { day: "Monday", open: "08:00", close: "18:00", closed: false },
+    { day: "Tuesday", open: "08:00", close: "18:00", closed: false },
+    { day: "Wednesday", open: "08:00", close: "18:00", closed: false },
+    { day: "Thursday", open: "08:00", close: "18:00", closed: false },
+    { day: "Friday", open: "08:00", close: "18:00", closed: false },
+    { day: "Saturday", open: "09:00", close: "13:00", closed: false },
+    { day: "Sunday", open: "09:00", close: "13:00", closed: true },
+  ]),
   footer_about:
     "Building excellence since 2010. Your trusted partner in construction projects of all sizes.",
 };

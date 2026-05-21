@@ -37,7 +37,7 @@ export default function ProjectsPage() {
     return (
       <div>
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold text-primary">Projects</h1>
+          <h1 className="text-2xl font-bold text-heading">Projects</h1>
         </div>
         <Skeleton className="h-64 w-full" />
       </div>
@@ -54,7 +54,7 @@ export default function ProjectsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-primary">Projects</h1>
+        <h1 className="text-2xl font-bold text-heading">Projects</h1>
         <Button variant="primary" href="/admin/projects/new">Add Project</Button>
       </div>
       {projects.length === 0 ? (

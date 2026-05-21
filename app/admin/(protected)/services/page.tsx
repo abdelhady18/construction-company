@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import DataTable from "@/components/admin/DataTable";
 import Button from "@/components/ui/Button";
+import Icon from "@/components/ui/Icon";
 import EmptyState from "@/components/ui/EmptyState";
 import Skeleton from "@/components/ui/Skeleton";
 
@@ -38,15 +39,25 @@ export default function ServicesPage() {
     return (
       <div>
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold text-primary">Services</h1>
+          <h1 className="text-2xl font-bold text-heading">Services</h1>
         </div>
         <Skeleton className="h-64 w-full" />
       </div>
     );
   }
 
+  const iconMap: Record<string, any> = {
+    Building: "building", Home: "home", Road: "road", Bridge: "bridge",
+    Renovation: "renovation", Design: "design", Consulting: "consulting",
+    Interior: "interior", Electrical: "electrical", Plumbing: "plumbing",
+  };
+
   const columns = [
-    { key: "icon", label: "Icon", render: (v: unknown) => <span className="text-2xl">{String(v)}</span> },
+    { key: "icon", label: "Icon", render: (v: unknown) => (
+      <div className="w-8 h-8 rounded-md bg-accent/10 flex items-center justify-center">
+        <Icon name={iconMap[String(v)] || "hardhat"} size={16} className="text-accent" />
+      </div>
+    ) },
     { key: "title", label: "Title" },
     { key: "description", label: "Description", render: (v: unknown) => <span className="line-clamp-2">{String(v)}</span> },
     { key: "order", label: "Order" },
@@ -55,7 +66,7 @@ export default function ServicesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-bold text-primary">Services</h1>
+        <h1 className="text-2xl font-bold text-heading">Services</h1>
         <Button variant="primary" href="/admin/services/new">
           Add Service
         </Button>

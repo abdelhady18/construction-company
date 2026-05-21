@@ -36,13 +36,13 @@ export default function NewProjectPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-primary mb-8">New Project</h1>
+      <h1 className="text-2xl font-bold text-heading mb-8">New Project</h1>
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
         <Input label="Title" name="title" required placeholder="e.g. Modern Office Building" />
         <Input label="Description" name="description" type="textarea" required placeholder="Describe the project..." />
         <Input label="Category" name="category" placeholder="e.g. Commercial, Residential, Industrial" />
         <ImageUploader images={images} onChange={setImages} />
-        <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+        <label className="flex items-center gap-2 text-sm font-medium text-foreground">
           <input type="checkbox" name="featured" className="rounded" />
           Featured project
         </label>
