@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import StatsCard from "@/components/admin/StatsCard";
 import Button from "@/components/ui/Button";
-import EmptyState from "@/components/ui/EmptyState";
 
 export default async function DashboardPage() {
   const [serviceCount, projectCount, messageCount, unreadCount] = await Promise.all([
