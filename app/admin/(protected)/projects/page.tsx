@@ -67,7 +67,7 @@ export default function ProjectsPage() {
         <DataTable
           columns={columns}
           data={projects}
-          onEdit={(id) => router.push(`/admin/projects/${id}`)}
+          onView={(id) => router.push(`/admin/projects/${id}`)}
           onDelete={handleDelete}
         />
       )}

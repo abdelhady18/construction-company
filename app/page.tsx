@@ -5,8 +5,11 @@ import Projects from "@/components/sections/Projects";
 import About from "@/components/sections/About";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
+import { getSettings } from "@/lib/settings";
 
-export default function Home() {
+export default async function Home() {
+  const settings = await getSettings();
+
   return (
     <>
       <Navbar />
@@ -14,7 +17,7 @@ export default function Home() {
       <Services />
       <Projects />
       <About />
-      <Contact />
+      <Contact settings={settings} />
       <Footer />
     </>
   );

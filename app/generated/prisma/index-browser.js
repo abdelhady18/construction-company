@@ -159,6 +159,12 @@ exports.Prisma.ContactMessageScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.SiteSettingScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  value: 'value'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -179,7 +185,8 @@ exports.Prisma.ModelName = {
   Admin: 'Admin',
   Service: 'Service',
   Project: 'Project',
-  ContactMessage: 'ContactMessage'
+  ContactMessage: 'ContactMessage',
+  SiteSetting: 'SiteSetting'
 };
 
 /**

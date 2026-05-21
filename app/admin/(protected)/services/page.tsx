@@ -70,7 +70,7 @@ export default function ServicesPage() {
         <DataTable
           columns={columns}
           data={services}
-          onEdit={(id) => router.push(`/admin/services/${id}`)}
+          onView={(id) => router.push(`/admin/services/${id}`)}
           onDelete={handleDelete}
         />
       )}

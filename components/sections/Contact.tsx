@@ -4,8 +4,18 @@ import { useState } from "react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 
-export default function Contact() {
+interface ContactSettings {
+  contact_title?: string;
+  contact_subtitle?: string;
+  contact_address?: string;
+  contact_phone?: string;
+  contact_email?: string;
+  contact_hours?: string;
+}
+
+export default function Contact({ settings }: { settings?: ContactSettings }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const s = settings || {};
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -41,9 +51,9 @@ export default function Contact() {
     <section id="contact" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-primary">Contact Us</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-primary">{s.contact_title || "Contact Us"}</h2>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            Ready to start your project? Get in touch with us today
+            {s.contact_subtitle || "Ready to start your project? Get in touch with us today"}
           </p>
         </div>
 
@@ -72,34 +82,42 @@ export default function Contact() {
             <div>
               <h3 className="text-lg font-semibold text-primary mb-4">Get In Touch</h3>
               <div className="space-y-4 text-gray-600">
-                <div className="flex items-start gap-3">
-                  <span className="text-xl">📍</span>
-                  <div>
-                    <p className="font-medium">Address</p>
-                    <p>123 Construction Ave, Building District, NY 10001</p>
+                {s.contact_address && (
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">📍</span>
+                    <div>
+                      <p className="font-medium">Address</p>
+                      <p>{s.contact_address}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-xl">📞</span>
-                  <div>
-                    <p className="font-medium">Phone</p>
-                    <p>+1 (555) 123-4567</p>
+                )}
+                {s.contact_phone && (
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">📞</span>
+                    <div>
+                      <p className="font-medium">Phone</p>
+                      <p>{s.contact_phone}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-xl">✉️</span>
-                  <div>
-                    <p className="font-medium">Email</p>
-                    <p>info@buildco.com</p>
+                )}
+                {s.contact_email && (
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">✉️</span>
+                    <div>
+                      <p className="font-medium">Email</p>
+                      <p>{s.contact_email}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-xl">🕐</span>
-                  <div>
-                    <p className="font-medium">Hours</p>
-                    <p>Mon-Fri: 8:00 AM - 6:00 PM</p>
+                )}
+                {s.contact_hours && (
+                  <div className="flex items-start gap-3">
+                    <span className="text-xl">🕐</span>
+                    <div>
+                      <p className="font-medium">Hours</p>
+                      <p>{s.contact_hours}</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 

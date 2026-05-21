@@ -9,6 +9,7 @@ const links = [
   { href: "/admin/services", label: "Services", icon: "🏗️" },
   { href: "/admin/projects", label: "Projects", icon: "🏗️" },
   { href: "/admin/messages", label: "Messages", icon: "✉️" },
+  { href: "/admin/settings", label: "Settings", icon: "⚙️" },
 ];
 
 export default function Sidebar() {
