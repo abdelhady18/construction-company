@@ -23,10 +23,13 @@ export default function Input({
 }: InputProps) {
   const isControlled = value !== undefined && onChange !== undefined;
 
+  const inputBase =
+    "rounded-lg border border-border px-4 py-2.5 bg-transparent text-foreground placeholder:text-muted/60 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition";
+
   return (
-    <div className={`flex flex-col gap-1 ${className}`}>
+    <div className={`flex flex-col gap-1.5 ${className}`}>
       {label && (
-        <label htmlFor={name} className="text-sm font-medium text-gray-700">
+        <label htmlFor={name} className="text-sm font-medium text-foreground">
           {label} {required && <span className="text-red-500">*</span>}
         </label>
       )}
@@ -40,7 +43,7 @@ export default function Input({
           value={isControlled ? value : undefined}
           onChange={isControlled ? (e) => onChange(e.target.value) : undefined}
           rows={5}
-          className="rounded-lg border border-gray-300 px-4 py-2.5 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
+          className={inputBase}
         />
       ) : (
         <input
@@ -52,7 +55,7 @@ export default function Input({
           defaultValue={isControlled ? undefined : defaultValue}
           value={isControlled ? value : undefined}
           onChange={isControlled ? (e) => onChange(e.target.value) : undefined}
-          className="rounded-lg border border-gray-300 px-4 py-2.5 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition"
+          className={inputBase}
         />
       )}
     </div>

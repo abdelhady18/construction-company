@@ -1,11 +1,18 @@
 interface CardProps {
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }
 
-export default function Card({ children, className = "" }: CardProps) {
+export default function Card({ children, className = "", onClick }: CardProps) {
   return (
-    <div className={`rounded-xl bg-white shadow-md hover:shadow-lg transition-shadow ${className}`}>
+    <div
+      className={`rounded-xl bg-surface border border-border transition-all duration-300 ${className}`}
+      onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={onClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') onClick(); } : undefined}
+    >
       {children}
     </div>
   );

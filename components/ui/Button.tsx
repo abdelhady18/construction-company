@@ -13,12 +13,18 @@ interface ButtonProps {
 }
 
 const variantClasses: Record<Variant, string> = {
-  primary: "bg-primary text-white hover:bg-primary-light",
-  secondary: "bg-gray-200 text-gray-800 hover:bg-gray-300",
-  accent: "bg-accent text-white hover:bg-accent-light",
-  outline: "border-2 border-primary text-primary hover:bg-primary hover:text-white",
-  ghost: "text-primary hover:bg-primary/10",
-  danger: "bg-red-600 text-white hover:bg-red-700",
+  primary:
+    "bg-primary text-white hover:bg-primary-light",
+  secondary:
+    "bg-border text-foreground hover:bg-border/80",
+  accent:
+    "bg-accent text-white hover:bg-accent-light",
+  outline:
+    "border border-accent text-accent hover:bg-accent hover:text-white",
+  ghost:
+    "text-foreground hover:bg-primary/5",
+  danger:
+    "bg-red-600 text-white hover:bg-red-700",
 };
 
 export default function Button({
@@ -30,7 +36,8 @@ export default function Button({
   onClick,
   disabled = false,
 }: ButtonProps) {
-  const base = "inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
+  const base =
+    "inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-sm tracking-wide";
 
   if (href) {
     return (
