@@ -24,37 +24,44 @@ const defaultSettings = {
 
 type Settings = typeof defaultSettings;
 
-const sections = [
+interface FieldDef {
+  key: string;
+  label: string;
+  type: string;
+  appears: string;
+}
+
+const sections: { key: string; label: string; fields: FieldDef[] }[] = [
   {
     key: "site",
     label: "Site Information",
     fields: [
-      { key: "company_name", label: "Company Name", type: "text" },
-      { key: "company_tagline", label: "Tagline", type: "text" },
-      { key: "company_description", label: "Description", type: "textarea" },
-      { key: "footer_about", label: "Footer About Text", type: "textarea" },
+      { key: "company_name", label: "Company Name", type: "text", appears: "Header, Footer, Copyright" },
+      { key: "company_tagline", label: "Tagline", type: "text", appears: "Hero banner" },
+      { key: "company_description", label: "Description", type: "textarea", appears: "Hero banner subtitle" },
+      { key: "footer_about", label: "Footer About Text", type: "textarea", appears: "Footer sidebar" },
     ],
   },
   {
     key: "about",
     label: "About Section",
     fields: [
-      { key: "about_title", label: "Title", type: "text" },
-      { key: "about_subtitle", label: "Subtitle", type: "text" },
-      { key: "about_story", label: "Story Paragraph 1", type: "textarea" },
-      { key: "about_story_2", label: "Story Paragraph 2", type: "textarea" },
+      { key: "about_title", label: "Title", type: "text", appears: "About section heading" },
+      { key: "about_subtitle", label: "Subtitle", type: "text", appears: "About section under heading" },
+      { key: "about_story", label: "Story Paragraph 1", type: "textarea", appears: "About → Our Story" },
+      { key: "about_story_2", label: "Story Paragraph 2", type: "textarea", appears: "About → Our Story" },
     ],
   },
   {
     key: "contact",
     label: "Contact Section",
     fields: [
-      { key: "contact_title", label: "Title", type: "text" },
-      { key: "contact_subtitle", label: "Subtitle", type: "text" },
-      { key: "contact_address", label: "Address", type: "text" },
-      { key: "contact_phone", label: "Phone", type: "text" },
-      { key: "contact_email", label: "Email", type: "email" },
-      { key: "contact_hours", label: "Business Hours", type: "text" },
+      { key: "contact_title", label: "Title", type: "text", appears: "Contact section heading" },
+      { key: "contact_subtitle", label: "Subtitle", type: "text", appears: "Contact section under heading" },
+      { key: "contact_address", label: "Address", type: "text", appears: "Contact section + Footer" },
+      { key: "contact_phone", label: "Phone", type: "text", appears: "Contact section + Footer" },
+      { key: "contact_email", label: "Email", type: "email", appears: "Contact section + Footer" },
+      { key: "contact_hours", label: "Business Hours", type: "text", appears: "Contact section only" },
     ],
   },
 ];
@@ -115,13 +122,17 @@ export default function SettingsPage() {
             <h2 className="text-lg font-semibold text-primary mb-6">{section.label}</h2>
             <div className="space-y-5">
               {section.fields.map((field) => (
-                <Input
-                  key={field.key}
-                  label={field.label}
-                  value={settings[field.key as keyof Settings]}
-                  onChange={(v) => setSettings({ ...settings, [field.key]: v })}
-                  type={field.type === "textarea" ? "textarea" : "text"}
-                />
+                <div key={field.key}>
+                  <Input
+                    label={field.label}
+                    value={settings[field.key as keyof Settings]}
+                    onChange={(v) => setSettings({ ...settings, [field.key]: v })}
+                    type={field.type === "textarea" ? "textarea" : "text"}
+                  />
+                  <p className="mt-1 text-xs text-gray-400">
+                    Appears in: <span className="font-medium">{field.appears}</span>
+                  </p>
+                </div>
               ))}
             </div>
           </div>
