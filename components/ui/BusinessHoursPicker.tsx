@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 interface DayHours {
   day: string;
@@ -82,7 +82,7 @@ export default function BusinessHoursPicker({
   onChange,
   className = "",
 }: BusinessHoursPickerProps) {
-  const days = parseHours(value);
+  const days = useMemo(() => parseHours(value), [value]);
 
   const updateDay = useCallback(
     (index: number, field: keyof DayHours, val: string | boolean) => {
@@ -109,11 +109,9 @@ export default function BusinessHoursPicker({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </div>
-          {formatHoursDisplay(value) && (
-            <span className="text-xs text-muted hidden sm:block">
-              {formatHoursDisplay(value)}
-            </span>
-          )}
+          {(() => { const display = formatHoursDisplay(value); return display ? (
+            <span className="text-xs text-muted hidden sm:block">{display}</span>
+          ) : null; })()}
         </summary>
         <div className="mt-3 space-y-2">
           {days.map((day, i) => (
@@ -139,6 +137,7 @@ export default function BusinessHoursPicker({
                     type="time"
                     value={day.open}
                     onChange={(e) => updateDay(i, "open", e.target.value)}
+                    aria-label={`${day.day} open time`}
                     className="flex-1 max-w-[140px] rounded-lg border border-border px-3 py-1.5 bg-transparent text-sm text-foreground focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition"
                   />
                   <span className="text-muted text-sm">to</span>
@@ -146,6 +145,7 @@ export default function BusinessHoursPicker({
                     type="time"
                     value={day.close}
                     onChange={(e) => updateDay(i, "close", e.target.value)}
+                    aria-label={`${day.day} close time`}
                     className="flex-1 max-w-[140px] rounded-lg border border-border px-3 py-1.5 bg-transparent text-sm text-foreground focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition"
                   />
                 </>

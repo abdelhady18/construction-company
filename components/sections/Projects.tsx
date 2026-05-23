@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import Card from "@/components/ui/Card";
 import Skeleton from "@/components/ui/Skeleton";
+import EmptyState from "@/components/ui/EmptyState";
 import ProjectCard from "./ProjectCard";
 
 interface Project {
@@ -17,6 +18,7 @@ interface Project {
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     fetch("/api/projects")
@@ -56,7 +58,13 @@ export default function Projects() {
   }
 
   if (projects.length === 0) {
-    return null;
+    return (
+      <section id="projects" className="py-24 bg-surface">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <EmptyState title="No projects yet" description="Projects will appear here once added." />
+        </div>
+      </section>
+    );
   }
 
   const [featured, ...rest] = projects;
@@ -65,8 +73,8 @@ export default function Projects() {
     <section id="projects" className="py-24 bg-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+          whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
@@ -74,7 +82,7 @@ export default function Projects() {
           <span className="text-accent text-sm font-medium tracking-[0.2em] uppercase">
             Our Portfolio
           </span>
-          <h2 className="font-serif text-4xl sm:text-5xl text-heading mt-3">
+          <h2 className="font-serif text-4xl sm:text-5xl text-heading mt-3 text-balance">
             Featured Projects
           </h2>
           <p className="mt-4 text-muted max-w-2xl mx-auto">
@@ -84,8 +92,8 @@ export default function Projects() {
 
         {featured && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="mb-8"
@@ -101,8 +109,8 @@ export default function Projects() {
             {rest.map((project, index) => (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+                whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >

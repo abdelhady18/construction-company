@@ -23,10 +23,12 @@ export default function ServicesPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/services")
+    const ac = new AbortController();
+    fetch("/api/services", { signal: ac.signal })
       .then((res) => res.json())
       .then((data) => setServices(data))
       .finally(() => setLoading(false));
+    return () => ac.abort();
   }, []);
 
   async function handleDelete(id: string) {

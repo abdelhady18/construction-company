@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 
 interface Stat {
   value: string;
@@ -43,7 +43,7 @@ export default function StatsPicker({
   onChange,
   className = "",
 }: StatsPickerProps) {
-  const stats = parseStats(value);
+  const stats = useMemo(() => parseStats(value), [value]);
 
   const updateStat = useCallback(
     (index: number, field: "value" | "label", val: string) => {

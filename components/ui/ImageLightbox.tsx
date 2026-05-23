@@ -40,7 +40,12 @@ export default function ImageLightbox({
   return (
     <div
       className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image gallery"
       onClick={onClose}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClose(); }}
+      style={{ overscrollBehavior: 'contain' }}
     >
       <button
         onClick={onClose}

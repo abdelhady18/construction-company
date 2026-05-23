@@ -41,19 +41,23 @@ export default function PhoneInput({
     onChange?.(formatted);
   }
 
+  const inputId = label.toLowerCase().replace(/\s+/g, "-");
+
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
-      <label className="text-sm font-medium text-foreground">
+      <label htmlFor={inputId} className="text-sm font-medium text-foreground">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <div className="relative">
         <input
+          id={inputId}
           type="tel"
           value={value}
           onChange={(e) => handleChange(e.target.value)}
           onBlur={() => setTouched(true)}
           placeholder="+1 (555) 123-4567"
           required={required}
+          autoComplete="tel"
           className={`w-full rounded-lg border px-4 py-2.5 bg-transparent text-foreground placeholder:text-muted/60 outline-none transition ${
             error
               ? "border-red-400 focus:border-red-500 focus:ring-2 focus:ring-red-500/20"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
@@ -10,6 +10,15 @@ export default function NewProjectPage() {
   const router = useRouter();
   const [images, setImages] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -48,7 +57,7 @@ export default function NewProjectPage() {
         </label>
         <div className="flex gap-4">
           <Button type="submit" variant="primary" disabled={submitting}>
-            {submitting ? "Creating..." : "Create Project"}
+            {submitting ? "Creating…" : "Create Project"}
           </Button>
           <Button variant="ghost" href="/admin/projects">Cancel</Button>
         </div>

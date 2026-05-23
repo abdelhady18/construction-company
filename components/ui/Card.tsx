@@ -7,7 +7,7 @@ interface CardProps {
 export default function Card({ children, className = "", onClick }: CardProps) {
   return (
     <div
-      className={`rounded-xl bg-surface border border-border transition-all duration-300 ${className}`}
+      className={`rounded-xl bg-surface border border-border transition duration-300 touch-manipulation ${className}`}
       onClick={onClick}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}

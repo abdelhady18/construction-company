@@ -37,7 +37,7 @@ export default function Button({
   disabled = false,
 }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-sm tracking-wide";
+    "inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-sm tracking-wide touch-manipulation";
 
   if (href) {
     return (

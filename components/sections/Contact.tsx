@@ -1,22 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
+import { useSettings } from "@/lib/SettingsContext";
 import { formatHoursDisplay } from "@/components/ui/BusinessHoursPicker";
 
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [settings, setSettings] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    fetch("/api/settings")
-      .then((r) => r.json())
-      .then((data) => setSettings(data))
-      .catch(() => {});
-  }, []);
+  const settings = useSettings();
+  const prefersReducedMotion = useReducedMotion();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -66,8 +61,8 @@ export default function Contact() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+          whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
@@ -75,7 +70,7 @@ export default function Contact() {
           <span className="text-accent text-sm font-medium tracking-[0.2em] uppercase">
             Get In Touch
           </span>
-          <h2 className="font-serif text-4xl sm:text-5xl text-white mt-3">
+          <h2 className="font-serif text-4xl sm:text-5xl text-white mt-3 text-balance">
             {settings.contact_title || "Contact Us"}
           </h2>
           <p className="mt-4 text-white/50 max-w-2xl mx-auto">
@@ -85,8 +80,8 @@ export default function Contact() {
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 max-w-5xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, x: -20 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="lg:col-span-3"
@@ -132,7 +127,7 @@ export default function Contact() {
                   className="w-full"
                   disabled={status === "loading"}
                 >
-                  {status === "loading" ? "Sending..." : "Send Message"}
+                  {status === "loading" ? "Sending…" : "Send Message"}
                 </Button>
 
                 {status === "success" && (
@@ -150,8 +145,8 @@ export default function Contact() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, x: 20 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="lg:col-span-2"

@@ -26,6 +26,14 @@ export default function Input({
   const inputBase =
     "rounded-lg border border-border px-4 py-2.5 bg-transparent text-foreground placeholder:text-muted/60 focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition";
 
+  const autoCompleteMap: Record<string, string> = {
+    name: "name",
+    email: "email",
+    tel: "tel",
+    phone: "tel",
+    message: "off",
+  };
+
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
       {label && (
@@ -34,7 +42,7 @@ export default function Input({
         </label>
       )}
       {type === "textarea" ? (
-        <textarea
+          <textarea
           id={name}
           name={name}
           required={required}
@@ -43,6 +51,7 @@ export default function Input({
           value={isControlled ? value : undefined}
           onChange={isControlled ? (e) => onChange(e.target.value) : undefined}
           rows={5}
+          autoComplete={name ? autoCompleteMap[name] || "off" : undefined}
           className={inputBase}
         />
       ) : (
@@ -55,6 +64,7 @@ export default function Input({
           defaultValue={isControlled ? undefined : defaultValue}
           value={isControlled ? value : undefined}
           onChange={isControlled ? (e) => onChange(e.target.value) : undefined}
+          autoComplete={name ? autoCompleteMap[name] || "off" : undefined}
           className={inputBase}
         />
       )}

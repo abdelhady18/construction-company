@@ -24,13 +24,23 @@ export default function EditProjectPage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    fetch("/api/projects")
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, []);
+
+  useEffect(() => {
+    const ac = new AbortController();
+    fetch(`/api/projects/${id}`, { signal: ac.signal })
       .then((res) => res.json())
       .then((data) => {
-        const p = data.find((x: Project) => x.id === id);
-        setProject(p);
-        if (p) setImages(JSON.parse(p.images));
+        setProject(data);
+        if (data) setImages(JSON.parse(data.images));
       });
+    return () => ac.abort();
   }, [id]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

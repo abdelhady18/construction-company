@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import DataTable from "@/components/admin/DataTable";
-import MessageDetailModal from "@/components/admin/MessageDetailModal";
 import Skeleton from "@/components/ui/Skeleton";
 import EmptyState from "@/components/ui/EmptyState";
+
+const MessageDetailModal = dynamic(() => import("@/components/admin/MessageDetailModal"), { ssr: false });
 
 interface Message {
   id: string;
@@ -22,10 +24,12 @@ export default function MessagesPage() {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 
   useEffect(() => {
-    fetch("/api/contact")
+    const ac = new AbortController();
+    fetch("/api/contact", { signal: ac.signal })
       .then((res) => res.json())
       .then((data) => setMessages(data))
       .finally(() => setLoading(false));
+    return () => ac.abort();
   }, []);
 
   async function markRead(id: string) {

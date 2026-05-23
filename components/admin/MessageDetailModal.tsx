@@ -30,23 +30,36 @@ export default function MessageDetailModal({
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
+    const prev = document.activeElement as HTMLElement | null;
+    const el = document.getElementById("message-dialog");
+    const focusable = el?.querySelector<HTMLElement>("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
+    focusable?.focus();
+    return () => {
+      document.removeEventListener("keydown", handler);
+      prev?.focus();
+    };
   }, [onClose]);
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
       onClick={onClose}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClose(); }}
     >
       <div
+        id="message-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="message-dialog-title"
         className="w-full max-w-lg rounded-xl bg-surface shadow-2xl border border-border"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-border px-6 py-4">
-          <h2 className="text-lg font-bold text-heading">Message Details</h2>
+          <h2 id="message-dialog-title" className="text-lg font-bold text-heading">Message Details</h2>
           <button
             onClick={onClose}
             className="cursor-pointer text-2xl leading-none text-muted hover:text-foreground"
+            aria-label="Close"
           >
             &times;
           </button>

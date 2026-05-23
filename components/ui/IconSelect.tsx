@@ -27,6 +27,7 @@ export default function IconSelect({
   const ref = useRef<HTMLDivElement>(null);
 
   const selected = options.find((o) => o.value === value) || options[0];
+  const [activeIndex, setActiveIndex] = useState(-1);
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -38,6 +39,38 @@ export default function IconSelect({
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (!open) {
+      if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
+        e.preventDefault();
+        setOpen(true);
+        setActiveIndex(0);
+      }
+      return;
+    }
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setActiveIndex((prev) => (prev < options.length - 1 ? prev + 1 : 0));
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setActiveIndex((prev) => (prev > 0 ? prev - 1 : options.length - 1));
+        break;
+      case "Enter":
+      case " ":
+        e.preventDefault();
+        if (activeIndex >= 0) {
+          onChange?.(options[activeIndex].value);
+        }
+        setOpen(false);
+        break;
+      case "Escape":
+        setOpen(false);
+        break;
+    }
+  }
+
   return (
     <div className="flex flex-col gap-1.5" ref={ref}>
       {label && (
@@ -48,6 +81,9 @@ export default function IconSelect({
         <button
           type="button"
           onClick={() => setOpen(!open)}
+          onKeyDown={handleKeyDown}
+          aria-haspopup="listbox"
+          aria-expanded={open}
           className="w-full flex items-center gap-3 rounded-lg border border-border px-4 py-2.5 bg-transparent text-foreground focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition cursor-pointer"
         >
           <div className="w-6 h-6 rounded-md bg-accent/10 flex items-center justify-center shrink-0">
@@ -65,17 +101,23 @@ export default function IconSelect({
         </button>
 
         {open && (
-          <div className="absolute top-full left-0 right-0 mt-1 z-20 rounded-lg border border-border bg-surface shadow-xl max-h-60 overflow-y-auto">
-            {options.map((opt) => (
+          <div
+            className="absolute top-full left-0 right-0 mt-1 z-20 rounded-lg border border-border bg-surface shadow-xl max-h-60 overflow-y-auto"
+            role="listbox"
+          >
+            {options.map((opt, i) => (
               <button
                 key={opt.value}
                 type="button"
+                role="option"
+                aria-selected={opt.value === selected.value}
+                onMouseEnter={() => setActiveIndex(i)}
                 onClick={() => {
                   onChange?.(opt.value);
                   setOpen(false);
                 }}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left transition-colors cursor-pointer ${
-                  opt.value === selected.value
+                  i === activeIndex
                     ? "bg-accent/10 text-accent"
                     : "text-foreground hover:bg-background"
                 }`}

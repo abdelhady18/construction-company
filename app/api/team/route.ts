@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { parseBody, teamMemberSchema } from "@/lib/validation";
 
 export async function GET() {
   const members = await prisma.teamMember.findMany({
@@ -16,15 +17,20 @@ export async function POST(req: NextRequest) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await req.json();
+  const { data, error, status } = await parseBody(req, teamMemberSchema);
+  if (error) {
+    return Response.json({ error }, { status: status || 400 });
+  }
+
   const member = await prisma.teamMember.create({
     data: {
-      name: body.name,
-      role: body.role,
-      imageUrl: body.imageUrl || null,
-      order: body.order || 0,
+      name: data!.name,
+      role: data!.role,
+      imageUrl: data!.imageUrl || null,
+      order: data!.order,
     },
   });
   revalidatePath("/");
+  revalidatePath("/admin/team");
   return Response.json(member, { status: 201 });
 }

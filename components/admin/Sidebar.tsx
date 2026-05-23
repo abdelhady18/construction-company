@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
 import { signOut } from "next-auth/react";
 import Icon from "@/components/ui/Icon";
+import { useSettings } from "@/lib/SettingsContext";
 
 const links = [
   { href: "/admin/dashboard", label: "Dashboard", icon: "building" as const },
@@ -17,14 +17,7 @@ const links = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [s, setS] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    fetch("/api/settings")
-      .then((r) => r.json())
-      .then((data) => setS(data))
-      .catch(() => {});
-  }, []);
+  const s = useSettings();
 
   return (
     <aside className="w-64 bg-[#0d0d0d] text-white min-h-screen flex flex-col">

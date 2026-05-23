@@ -52,6 +52,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
               type="button"
               onClick={() => removeImage(i)}
               className="absolute top-1 right-1 bg-red-500 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center cursor-pointer"
+              aria-label="Remove image"
             >
               ×
             </button>
@@ -76,7 +77,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
         disabled={uploading}
         className="px-4 py-2 text-sm font-medium text-accent bg-accent/10 rounded-lg hover:bg-accent/20 disabled:opacity-50 cursor-pointer"
       >
-        {uploading ? "Uploading..." : "Add Image"}
+        {uploading ? "Uploading…" : "Add Image"}
       </button>
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
     </div>

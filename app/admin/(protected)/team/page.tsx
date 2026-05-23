@@ -21,10 +21,12 @@ export default function TeamPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/team")
+    const ac = new AbortController();
+    fetch("/api/team", { signal: ac.signal })
       .then((res) => res.json())
       .then((data) => setMembers(data))
       .finally(() => setLoading(false));
+    return () => ac.abort();
   }, []);
 
   async function handleDelete(id: string) {

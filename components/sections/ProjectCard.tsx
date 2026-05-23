@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import Card from "@/components/ui/Card";
-import ImageLightbox from "@/components/ui/ImageLightbox";
 import Icon from "@/components/ui/Icon";
+
+const ImageLightbox = dynamic(() => import("@/components/ui/ImageLightbox"), { ssr: false });
 
 interface ProjectCardProps {
   project: {
@@ -53,6 +55,9 @@ export default function ProjectCard({ project, featured }: ProjectCardProps) {
               <img
                 src={images[0]}
                 alt={project.title}
+                width={800}
+                height={600}
+                loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
@@ -80,11 +85,11 @@ export default function ProjectCard({ project, featured }: ProjectCardProps) {
             </div>
           </div>
         </div>
-        <div className={featured ? "lg:w-1/2 p-8 flex flex-col justify-center" : "p-6"}>
+        <div className={featured ? "lg:w-1/2 p-8 flex flex-col justify-center min-w-0" : "p-6 min-w-0"}>
           <h3 className={`font-semibold text-heading mb-2 ${featured ? "text-2xl" : "text-lg"}`}>
             {project.title}
           </h3>
-          <p className={`text-muted leading-relaxed line-clamp-3 ${featured ? "text-base" : "text-sm"}`}>
+          <p className={`text-muted leading-relaxed line-clamp-3 break-words ${featured ? "text-base" : "text-sm"}`}>
             {project.description}
           </p>
         </div>

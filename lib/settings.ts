@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { prisma } from "./prisma";
 
 export const defaultSettings = {
@@ -37,7 +38,7 @@ export const defaultSettings = {
 
 export type SiteSettings = typeof defaultSettings;
 
-export async function getSettings(): Promise<SiteSettings> {
+export const getSettings = cache(async (): Promise<SiteSettings> => {
   try {
     const rows = await prisma.siteSetting.findMany();
     const stored = Object.fromEntries(rows.map((r) => [r.key, r.value]));
@@ -45,7 +46,7 @@ export async function getSettings(): Promise<SiteSettings> {
   } catch {
     return { ...defaultSettings };
   }
-}
+});
 
 export async function updateSetting(key: string, value: string) {
   return prisma.siteSetting.upsert({

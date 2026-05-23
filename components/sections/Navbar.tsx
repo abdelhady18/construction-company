@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
 import ScrollProgress from "@/components/ui/ScrollProgress";
+import { useSettings } from "@/lib/SettingsContext";
 
 const navLinks = [
   { href: "#home", label: "Home" },
@@ -16,7 +17,7 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [s, setS] = useState<Record<string, string>>({});
+  const s = useSettings();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -24,18 +25,11 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    fetch("/api/settings")
-      .then((r) => r.json())
-      .then((data) => setS(data))
-      .catch(() => {});
-  }, []);
-
   return (
     <>
       <ScrollProgress />
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition duration-500 ${
           scrolled
             ? "bg-glass backdrop-blur-xl border-b border-border"
             : "bg-transparent"
@@ -57,7 +51,7 @@ export default function Navbar() {
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`text-sm font-medium tracking-wide transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:h-[1px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full ${
+                  className={`text-sm font-medium tracking-wide transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:h-[1px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full touch-manipulation ${
                     scrolled
                       ? "text-muted hover:text-foreground"
                       : "text-white/80 hover:text-white"

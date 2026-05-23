@@ -1,19 +1,15 @@
 "use client";
 
-import { motion } from "motion/react";
-import { useState, useEffect } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
+import { useSettings } from "@/lib/SettingsContext";
 
 export default function Hero() {
-  const [s, setS] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    fetch("/api/settings")
-      .then((r) => r.json())
-      .then((data) => setS(data))
-      .catch(() => {});
-  }, []);
+  const s = useSettings();
+  const prefersReducedMotion = useReducedMotion();
+  const noAnim = prefersReducedMotion ? { initial: false } : {};
+  const noAnimStagger = prefersReducedMotion ? { initial: false } : {};
 
   const tagline = s.company_tagline || "Building Your Vision With Excellence";
   const lastWith = tagline.lastIndexOf(" With ");
@@ -45,15 +41,15 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
+            {...(!prefersReducedMotion ? { initial: { opacity: 0, y: 40 } } : {})}
+            {...(!prefersReducedMotion ? { animate: { opacity: 1, y: 0 } } : {})}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="inline-flex items-center gap-2 text-accent text-sm font-medium tracking-[0.2em] uppercase mb-6">
               <span className="w-8 h-px bg-accent" />
               {s.company_name || "BuildCo"}
             </span>
-            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-white leading-[1.1] tracking-tight">
+            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-white leading-[1.1] tracking-tight text-balance">
               {before && (
                 <>
                   {before}
@@ -85,8 +81,8 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            {...(!prefersReducedMotion ? { initial: { opacity: 0, scale: 0.95 } } : {})}
+            {...(!prefersReducedMotion ? { animate: { opacity: 1, scale: 1 } } : {})}
             transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="hidden lg:flex justify-center"
           >
@@ -135,8 +131,8 @@ export default function Hero() {
       </div>
 
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        {...(!prefersReducedMotion ? { initial: { opacity: 0 } } : {})}
+        {...(!prefersReducedMotion ? { animate: { opacity: 1 } } : {})}
         transition={{ delay: 1.2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >

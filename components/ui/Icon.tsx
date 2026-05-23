@@ -221,7 +221,7 @@ interface IconProps {
 
 export default function Icon({ name, className = "", size = 24 }: IconProps) {
   return (
-    <span className={`inline-block ${className}`} style={{ width: size, height: size }}>
+    <span aria-hidden="true" className={`inline-block ${className}`} style={{ width: size, height: size }}>
       {icons[name]}
     </span>
   );

@@ -21,10 +21,12 @@ export default function ProjectsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/projects")
+    const ac = new AbortController();
+    fetch("/api/projects", { signal: ac.signal })
       .then((res) => res.json())
       .then((data) => setProjects(data))
       .finally(() => setLoading(false));
+    return () => ac.abort();
   }, []);
 
   async function handleDelete(id: string) {

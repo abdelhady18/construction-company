@@ -35,9 +35,20 @@ export default function EditServicePage() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    fetch("/api/services")
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, []);
+
+  useEffect(() => {
+    const ac = new AbortController();
+    fetch(`/api/services/${id}`, { signal: ac.signal })
       .then((res) => res.json())
-      .then((data) => setService(data.find((s: Service) => s.id === id)));
+      .then((data) => setService(data));
+    return () => ac.abort();
   }, [id]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

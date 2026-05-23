@@ -2,6 +2,16 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
+import { parseBody, serviceSchema } from "@/lib/validation";
+
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const service = await prisma.service.findUnique({ where: { id } });
+  if (!service) {
+    return Response.json({ error: "Not found" }, { status: 404 });
+  }
+  return Response.json(service);
+}
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -10,19 +20,24 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   }
 
   const { id } = await params;
-  const body = await req.json();
+
+  const { data, error, status } = await parseBody(req, serviceSchema);
+  if (error) {
+    return Response.json({ error }, { status: status || 400 });
+  }
 
   const service = await prisma.service.update({
     where: { id },
     data: {
-      title: body.title,
-      description: body.description,
-      icon: body.icon,
-      imageUrl: body.imageUrl,
-      order: body.order,
+      title: data!.title,
+      description: data!.description,
+      icon: data!.icon,
+      imageUrl: data!.imageUrl,
+      order: data!.order,
     },
   });
   revalidatePath("/");
+  revalidatePath("/admin/services");
   return Response.json(service);
 }
 
@@ -35,5 +50,6 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
   const { id } = await params;
   await prisma.service.delete({ where: { id } });
   revalidatePath("/");
+  revalidatePath("/admin/services");
   return Response.json({ success: true });
 }

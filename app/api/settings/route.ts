@@ -1,6 +1,8 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { parseBody, settingsSchema } from "@/lib/validation";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -19,16 +21,23 @@ export async function PUT(req: NextRequest) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = await req.json();
-  const updates = body as Record<string, string>;
-
-  for (const [key, value] of Object.entries(updates)) {
-    await prisma.siteSetting.upsert({
-      where: { key },
-      update: { value },
-      create: { key, value },
-    });
+  const { data: updates, error, status } = await parseBody(req, settingsSchema);
+  if (error) {
+    return Response.json({ error }, { status: status || 400 });
   }
+
+  await Promise.all(
+    Object.entries(updates!).map(([key, value]) =>
+      prisma.siteSetting.upsert({
+        where: { key },
+        update: { value },
+        create: { key, value },
+      })
+    )
+  );
+
+  revalidatePath("/");
+  revalidatePath("/admin/settings");
 
   return Response.json({ success: true });
 }

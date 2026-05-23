@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendContactEmail } from "@/lib/email";
 import { auth } from "@/lib/auth";
+import { parseBody, contactMessageSchema } from "@/lib/validation";
 
 export async function GET() {
   const session = await auth();
@@ -16,19 +17,18 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const { name, email, phone, message } = body;
-
-  if (!name || !email || !message) {
-    return Response.json({ error: "Missing required fields" }, { status: 400 });
+  const { data, error, status } = await parseBody(req, contactMessageSchema);
+  if (error) {
+    return Response.json({ error }, { status: status || 400 });
   }
 
   try {
-    await prisma.contactMessage.create({
-      data: { name, email, phone, message },
-    });
-
-    await sendContactEmail({ name, email, phone, message });
+    const [result] = await Promise.all([
+      prisma.contactMessage.create({
+        data: { name: data!.name, email: data!.email, phone: data!.phone ?? null, message: data!.message },
+      }),
+      sendContactEmail({ name: data!.name, email: data!.email, phone: data!.phone ?? undefined, message: data!.message }).catch(() => {}),
+    ]);
 
     return Response.json({ success: true }, { status: 201 });
   } catch {

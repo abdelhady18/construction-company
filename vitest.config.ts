@@ -5,9 +5,10 @@ export default defineConfig({
   test: {
     environment: "node",
     globals: true,
+    setupFiles: ["./vitest.setup.ts"],
     coverage: {
       provider: "v8",
-      include: ["app/api/upload/**"],
+      include: ["app/api/**", "lib/**"],
     },
   },
   resolve: {

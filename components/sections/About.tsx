@@ -1,25 +1,22 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { useState, useEffect } from "react";
 import Icon from "@/components/ui/Icon";
+import { useSettings } from "@/lib/SettingsContext";
 
 export default function About() {
-  const [s, setS] = useState<Record<string, string>>({});
+  const s = useSettings();
   const [team, setTeam] = useState<{ id: string; name: string; role: string; imageUrl: string | null }[]>([]);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    fetch("/api/settings")
-      .then((r) => r.json())
-      .then((data) => setS(data))
-      .catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    fetch("/api/team")
+    const ac = new AbortController();
+    fetch("/api/team", { signal: ac.signal })
       .then((r) => r.json())
       .then((data) => setTeam(data))
       .catch(() => {});
+    return () => ac.abort();
   }, []);
 
   const defaultStats = [
@@ -43,8 +40,8 @@ export default function About() {
     <section id="about" className="py-24 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+          whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
@@ -52,7 +49,7 @@ export default function About() {
           <span className="text-accent text-sm font-medium tracking-[0.2em] uppercase">
             Who We Are
           </span>
-          <h2 className="font-serif text-4xl sm:text-5xl text-heading mt-3">
+          <h2 className="font-serif text-4xl sm:text-5xl text-heading mt-3 text-balance">
             {s.about_title || "About Us"}
           </h2>
           <p className="mt-4 text-muted max-w-2xl mx-auto">
@@ -62,8 +59,8 @@ export default function About() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-24">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, x: -20 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="relative"
@@ -88,15 +85,15 @@ export default function About() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, x: 20 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <span className="text-accent text-sm font-medium tracking-[0.2em] uppercase">
               Our Story
             </span>
-            <h3 className="font-serif text-3xl text-heading mt-3 mb-6">
+            <h3 className="font-serif text-3xl text-heading mt-3 mb-6 text-balance">
               Built on a Foundation of Trust
             </h3>
             <p className="text-muted leading-relaxed mb-4">
@@ -111,8 +108,8 @@ export default function About() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+          whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24"
@@ -122,7 +119,7 @@ export default function About() {
               key={stat.label}
               className="relative p-6 text-center border border-border rounded-xl bg-surface"
             >
-              <div className="text-3xl font-serif text-accent">{stat.value}</div>
+              <div className="text-3xl font-serif text-accent tabular-nums">{stat.value}</div>
               <div className="text-sm text-muted mt-1">{stat.label}</div>
             </div>
           ))}
@@ -130,13 +127,13 @@ export default function About() {
 
         <div>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+            whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h3 className="font-serif text-3xl text-heading">Meet Our Team</h3>
+            <h3 className="font-serif text-3xl text-heading text-balance">Meet Our Team</h3>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -150,8 +147,8 @@ export default function About() {
               return (
                 <motion.div
                   key={member.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+                  whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
@@ -160,6 +157,9 @@ export default function About() {
                       <img
                         src={member.imageUrl}
                         alt={member.name}
+                        width={64}
+                        height={64}
+                        loading="lazy"
                         className="w-16 h-16 rounded-full object-cover mx-auto mb-4"
                       />
                     ) : (

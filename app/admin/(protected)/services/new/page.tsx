@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
@@ -22,6 +22,15 @@ const iconOptions = [
 export default function NewServicePage() {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,7 +68,7 @@ export default function NewServicePage() {
         <Input label="Order" name="order" type="number" placeholder="0" defaultValue="0" />
         <div className="flex gap-4">
           <Button type="submit" variant="primary" disabled={submitting}>
-            {submitting ? "Creating..." : "Create Service"}
+            {submitting ? "Creating…" : "Create Service"}
           </Button>
           <Button variant="ghost" href="/admin/services">
             Cancel

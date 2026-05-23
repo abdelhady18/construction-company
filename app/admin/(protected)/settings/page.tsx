@@ -98,6 +98,15 @@ export default function SettingsPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, []);
+
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
@@ -201,7 +210,7 @@ export default function SettingsPage() {
 
         <div className="flex justify-end">
           <Button type="submit" variant="primary" disabled={saving}>
-            {saving ? "Saving..." : "Save Settings"}
+            {saving ? "Saving…" : "Save Settings"}
           </Button>
         </div>
       </form>

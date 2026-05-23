@@ -24,13 +24,14 @@ export default function EditTeamMemberPage() {
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    fetch("/api/team")
+    const ac = new AbortController();
+    fetch(`/api/team/${id}`, { signal: ac.signal })
       .then((res) => res.json())
       .then((data) => {
-        const m = data.find((t: TeamMember) => t.id === id);
-        setMember(m);
-        if (m) setImageUrl(m.imageUrl || "");
+        setMember(data);
+        if (data) setImageUrl(data.imageUrl || "");
       });
+    return () => ac.abort();
   }, [id]);
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {

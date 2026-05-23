@@ -1,23 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Icon from "@/components/ui/Icon";
+import { useSettings } from "@/lib/SettingsContext";
 
 export default function Footer() {
-  const [s, setS] = useState<Record<string, string>>({});
-
-  useEffect(() => {
-    fetch("/api/settings")
-      .then((r) => r.json())
-      .then((data) => setS(data))
-      .catch(() => {});
-  }, []);
+  const s = useSettings();
 
   return (
     <footer className="bg-[#0d0d0d] text-white border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          <div>
+          <div className="min-w-0">
             <h3 className="font-serif text-xl tracking-wide">
               {s.company_name || "BuildCo"}
             </h3>
@@ -27,7 +20,7 @@ export default function Footer() {
               </p>
             )}
           </div>
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-8 min-w-0">
             {["Home", "Services", "Projects", "About", "Contact"].map((link) => (
               <a
                 key={link}

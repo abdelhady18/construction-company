@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useScroll, useSpring } from "motion/react";
+import { motion, useScroll, useSpring, useReducedMotion } from "motion/react";
 
 export default function ScrollProgress() {
+  const prefersReducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const scaleY = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -13,7 +14,7 @@ export default function ScrollProgress() {
   return (
     <motion.div
       className="fixed top-0 left-0 right-0 h-[2px] bg-accent z-[60] origin-left"
-      style={{ scaleX: scaleY }}
+      style={{ scaleX: prefersReducedMotion ? scrollYProgress : scaleY }}
     />
   );
 }

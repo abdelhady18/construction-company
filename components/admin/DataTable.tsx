@@ -35,6 +35,9 @@ export default function DataTable({ columns, data, onView, onDelete, onRowClick 
               key={row.id as string || idx}
               className={`border-b border-border hover:bg-background ${onRowClick ? "cursor-pointer" : ""}`}
               onClick={onRowClick ? () => onRowClick(row.id as string) : undefined}
+              tabIndex={onRowClick ? 0 : undefined}
+              role={onRowClick ? "button" : undefined}
+              onKeyDown={onRowClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') onRowClick(row.id as string); } : undefined}
             >
               {columns.map((col) => (
                 <td key={col.key} className="px-6 py-4 text-foreground">
