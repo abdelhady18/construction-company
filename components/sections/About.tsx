@@ -23,10 +23,10 @@ export default function About() {
   }, []);
 
   const defaultStats = [
-    { value: "15+", label: t("stats.years") },
-    { value: "200+", label: t("stats.projects") },
-    { value: "50+", label: t("stats.team") },
-    { value: "98%", label: t("stats.satisfaction") },
+    { value: "20+", label: t("stats.years") },
+    { value: "50+", label: t("stats.projects") },
+    { value: "15+", label: t("stats.team") },
+    { value: "100%", label: t("stats.satisfaction") },
   ];
 
   let stats = defaultStats;
@@ -41,7 +41,7 @@ export default function About() {
   }
 
   return (
-    <section id="about" className="py-24 bg-background">
+    <section id="about" className="py-24 bg-sand-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
@@ -57,7 +57,7 @@ export default function About() {
             {locale === "ar" && s.about_title_ar ? s.about_title_ar : s.about_title || "About Us"}
           </h2>
           <p className="mt-4 text-muted max-w-2xl mx-auto">
-            {locale === "ar" && s.about_subtitle_ar ? s.about_subtitle_ar : s.about_subtitle || "Dedicated to delivering superior construction services since 2010"}
+            {locale === "ar" && s.about_subtitle_ar ? s.about_subtitle_ar : s.about_subtitle || "Serving Bahrain with distinction since 2006"}
           </p>
         </motion.div>
 
@@ -69,13 +69,13 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-[#0d0d0d] border border-border relative">
+            <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-br from-primary to-primary-light border border-accent/20 relative shadow-xl shadow-primary/10">
               <div
-                className="absolute inset-0 opacity-[0.04]"
+                className="absolute inset-0 opacity-[0.06]"
                 style={{
                   backgroundImage: `
-                    linear-gradient(45deg, #a67c52 1px, transparent 1px),
-                    linear-gradient(-45deg, #a67c52 1px, transparent 1px)
+                    linear-gradient(45deg, #c8a758 1px, transparent 1px),
+                    linear-gradient(-45deg, #c8a758 1px, transparent 1px)
                   `,
                   backgroundSize: '40px 40px',
                 }}
@@ -83,7 +83,7 @@ export default function About() {
               <div className="absolute inset-0 flex items-center justify-center">
                 <Icon name="building" size={80} className="text-accent/20" />
               </div>
-              <div className="absolute top-4 left-4 w-20 h-20 border border-accent/20 rounded-lg" />
+              <div className="absolute top-4 left-4 w-20 h-20 border border-accent/30 rounded-lg" />
               <div className="absolute bottom-4 right-4 w-16 h-16 bg-accent/10 rounded-lg" />
             </div>
           </motion.div>
@@ -102,11 +102,11 @@ export default function About() {
             </h3>
             <p className="text-muted leading-relaxed mb-4">
               {locale === "ar" && s.about_story_ar ? s.about_story_ar : s.about_story ||
-                "Founded in 2010, BuildCo has grown from a small local contractor to one of the region's most trusted construction companies. We pride ourselves on quality craftsmanship, innovative solutions, and unwavering commitment to client satisfaction."}
+                "Founded in 2006 with our head office in the Kingdom of Bahrain, Abu Suhaib Construction has established itself as a trusted name in the construction industry. We carry out all types of construction, with particular expertise in luxury villas, residential developments, and commercial projects."}
             </p>
             <p className="text-muted leading-relaxed">
               {locale === "ar" && s.about_story_2_ar ? s.about_story_2_ar : s.about_story_2 ||
-                "Every project we undertake is a partnership. We listen, plan, and execute with precision, ensuring your vision becomes reality. Our team of experts brings decades of combined experience to every job."}
+                "We specialize in design and build services, offering comprehensive solutions from concept to completion. Our integrated approach combines architectural vision with practical execution, while our landscape design services transform outdoor spaces into breathtaking environments."}
             </p>
           </motion.div>
         </div>
@@ -121,9 +121,9 @@ export default function About() {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="relative p-6 text-center border border-border rounded-xl bg-surface"
+              className="relative p-6 text-center bg-surface border border-sand rounded-xl shadow-sm"
             >
-              <div className="text-3xl font-serif text-accent tabular-nums">{stat.value}</div>
+              <div className="text-3xl font-serif text-accent-dark tabular-nums">{stat.value}</div>
               <div className="text-sm text-muted mt-1">{stat.label}</div>
             </div>
           ))}
@@ -158,7 +158,7 @@ export default function About() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="group relative p-6 text-center border border-border rounded-xl bg-surface hover:border-accent/30 transition-colors duration-300">
+                  <div className="group relative p-6 text-center bg-surface border border-sand rounded-xl hover:border-accent/40 hover:shadow-lg hover:shadow-accent/5 transition-all duration-300">
                     {member.imageUrl ? (
                       <img
                         src={member.imageUrl}
@@ -166,11 +166,11 @@ export default function About() {
                         width={64}
                         height={64}
                         loading="lazy"
-                        className="w-16 h-16 rounded-full object-cover mx-auto mb-4"
+                        className="w-16 h-16 rounded-full object-cover mx-auto mb-4 ring-2 ring-accent/20"
                       />
                     ) : (
-                      <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/20 transition-colors">
-                        <span className="text-lg font-semibold text-accent">{initials}</span>
+                      <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
+                        <span className="text-lg font-semibold text-accent group-hover:text-white transition-colors">{initials}</span>
                       </div>
                     )}
                     <h4 className="font-semibold text-heading">{displayName}</h4>

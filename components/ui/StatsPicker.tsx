@@ -15,10 +15,10 @@ interface StatsPickerProps {
 }
 
 const defaultStats: Stat[] = [
-  { value: "15+", label: "Years Experience" },
-  { value: "200+", label: "Projects Completed" },
-  { value: "50+", label: "Expert Team" },
-  { value: "98%", label: "Client Satisfaction" },
+  { value: "20+", label: "Years Experience" },
+  { value: "50+", label: "Projects Completed" },
+  { value: "15+", label: "Expert Team" },
+  { value: "100%", label: "Client Satisfaction" },
 ];
 
 function parseStats(json: string): Stat[] {

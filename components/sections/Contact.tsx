@@ -47,14 +47,13 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="relative py-24 overflow-hidden">
-      <div className="absolute inset-0 bg-[#0d0d0d]" />
+    <section id="contact" className="relative py-24 overflow-hidden" style={{ background: "linear-gradient(135deg, #0f1b2d 0%, #1b2a4a 100%)" }}>
       <div
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage: `
-            linear-gradient(45deg, #a67c52 1px, transparent 1px),
-            linear-gradient(-45deg, #a67c52 1px, transparent 1px)
+            linear-gradient(45deg, #c8a758 1px, transparent 1px),
+            linear-gradient(-45deg, #c8a758 1px, transparent 1px)
           `,
           backgroundSize: '60px 60px',
         }}
@@ -97,7 +96,7 @@ export default function Contact() {
                     name="name"
                     required
                     placeholder={t("form.namePlaceholder")}
-                    className="[&_input]:bg-transparent [&_input]:border-white/20 [&_input]:text-white [&_input]:placeholder:text-white/30 [&_input]:focus:border-accent [&_label]:text-white/80"
+                    className="[&_input]:bg-white/5 [&_input]:border-white/20 [&_input]:text-white [&_input]:placeholder:text-white/30 [&_input]:focus:border-accent [&_label]:text-white/80"
                   />
                   <Input
                     label={t("form.emailLabel")}
@@ -105,7 +104,7 @@ export default function Contact() {
                     type="email"
                     required
                     placeholder={t("form.emailPlaceholder")}
-                    className="[&_input]:bg-transparent [&_input]:border-white/20 [&_input]:text-white [&_input]:placeholder:text-white/30 [&_input]:focus:border-accent [&_label]:text-white/80"
+                    className="[&_input]:bg-white/5 [&_input]:border-white/20 [&_input]:text-white [&_input]:placeholder:text-white/30 [&_input]:focus:border-accent [&_label]:text-white/80"
                   />
                 </div>
                 <Input
@@ -113,7 +112,7 @@ export default function Contact() {
                   name="phone"
                   type="tel"
                   placeholder={t("form.phonePlaceholder")}
-                  className="[&_input]:bg-transparent [&_input]:border-white/20 [&_input]:text-white [&_input]:placeholder:text-white/30 [&_input]:focus:border-accent [&_label]:text-white/80"
+                  className="[&_input]:bg-white/5 [&_input]:border-white/20 [&_input]:text-white [&_input]:placeholder:text-white/30 [&_input]:focus:border-accent [&_label]:text-white/80"
                 />
                 <Input
                   label={t("form.messageLabel")}
@@ -121,13 +120,13 @@ export default function Contact() {
                   type="textarea"
                   required
                   placeholder={t("form.messagePlaceholder")}
-                  className="[&_textarea]:bg-transparent [&_textarea]:border-white/20 [&_textarea]:text-white [&_textarea]:placeholder:text-white/30 [&_textarea]:focus:border-accent [&_label]:text-white/80"
+                  className="[&_textarea]:bg-white/5 [&_textarea]:border-white/20 [&_textarea]:text-white [&_textarea]:placeholder:text-white/30 [&_textarea]:focus:border-accent [&_label]:text-white/80"
                 />
 
                 <Button
                   type="submit"
                   variant="accent"
-                  className="w-full"
+                  className="w-full shadow-lg shadow-accent/20"
                   disabled={status === "loading"}
                 >
                   {status === "loading" ? t("form.sending") : t("form.submit")}
@@ -207,7 +206,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="border border-white/10 rounded-xl p-6">
+              <div className="border border-white/10 rounded-xl p-6 bg-white/[0.02]">
                 <h3 className="font-semibold text-white mb-2">{t("consultation.heading")}</h3>
                 <p className="text-white/50 text-sm leading-relaxed">
                   {t("consultation.text")}

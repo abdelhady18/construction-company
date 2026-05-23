@@ -11,8 +11,6 @@ export default function Hero() {
   const t = useTranslations("hero");
   const locale = useLocale();
   const prefersReducedMotion = useReducedMotion();
-  const noAnim = prefersReducedMotion ? { initial: false } : {};
-  const noAnimStagger = prefersReducedMotion ? { initial: false } : {};
 
   const tagline = locale === "ar" && s.company_tagline_ar ? s.company_tagline_ar : s.company_tagline || "Building Your Vision With Excellence";
   const lastWith = tagline.lastIndexOf(" With ");
@@ -22,24 +20,29 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center overflow-hidden bg-[#0d0d0d]"
+      className="relative min-h-screen flex items-center overflow-hidden"
+      style={{
+        background: "linear-gradient(135deg, #0f1b2d 0%, #1b2a4a 50%, #0f1b2d 100%)"
+      }}
     >
-      <div className="absolute inset-0 opacity-[0.03]"
+      <div className="absolute inset-0 opacity-[0.04]"
         style={{
           backgroundImage: `
-            linear-gradient(45deg, #a67c52 1px, transparent 1px),
-            linear-gradient(-45deg, #a67c52 1px, transparent 1px)
+            linear-gradient(45deg, #c8a758 1px, transparent 1px),
+            linear-gradient(-45deg, #c8a758 1px, transparent 1px)
           `,
-          backgroundSize: '60px 60px',
+          backgroundSize: '80px 80px',
         }}
       />
 
-      <div className="absolute top-1/4 right-[10%] w-72 h-72 border border-accent/10 rounded-full" />
-      <div className="absolute bottom-1/4 left-[5%] w-96 h-96 border border-accent/5 rounded-full" />
-      <div className="absolute top-1/3 left-1/3 w-px h-64 bg-gradient-to-b from-accent/20 to-transparent" />
-      <div className="absolute top-1/2 right-1/4 w-px h-48 bg-gradient-to-b from-accent/10 to-transparent" />
+      <div className="absolute top-1/4 right-[10%] w-80 h-80 border border-accent/10 rounded-full" />
+      <div className="absolute bottom-1/4 left-[5%] w-96 h-96 bg-accent/[0.02] rounded-full blur-3xl" />
+      <div className="absolute top-1/3 left-1/3 w-px h-64 bg-gradient-to-b from-accent/30 to-transparent" />
+      <div className="absolute top-1/2 right-1/4 w-px h-48 bg-gradient-to-b from-accent/20 to-transparent" />
 
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0d0d0d] to-transparent" />
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-accent/[0.02] to-transparent" />
+
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0f1b2d] to-transparent" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -50,7 +53,7 @@ export default function Hero() {
           >
             <span className="inline-flex items-center gap-2 text-accent text-sm font-medium tracking-[0.2em] uppercase mb-6">
               <span className="w-8 h-px bg-accent" />
-              {s.company_name || "BuildCo"}
+              {locale === "ar" && s.company_name_ar ? s.company_name_ar : s.company_name || "Abu Suhaib Construction"}
             </span>
             <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-white leading-[1.1] tracking-tight text-balance">
               {before && (
@@ -69,14 +72,14 @@ export default function Hero() {
               <Button
                 variant="accent"
                 href="#contact"
-                className="text-base px-8 py-4"
+                className="text-base px-8 py-4 shadow-lg shadow-accent/20"
               >
                 {t("startProject")}
               </Button>
               <Button
                 variant="outline"
                 href="#projects"
-                className="text-base px-8 py-4 border-white/30 text-white hover:bg-white hover:text-[#0d0d0d]"
+                className="text-base px-8 py-4 border-white/30 text-white hover:bg-white hover:text-primary"
               >
                 {t("viewWork")}
               </Button>
@@ -121,12 +124,12 @@ export default function Hero() {
                 </div>
               </div>
 
-              <div className="absolute -bottom-3 -right-3 w-24 h-24 flex items-center justify-center bg-accent rounded-2xl">
+              <div className="absolute -bottom-3 -right-3 w-24 h-24 flex items-center justify-center bg-accent rounded-2xl shadow-lg shadow-accent/30">
                 <Icon name="hardhat" size={36} className="text-white" />
               </div>
 
               <div className="absolute -top-4 -left-4 w-16 h-16 border border-accent/30 rounded-full flex items-center justify-center">
-                <div className="w-3 h-3 bg-accent rounded-full" />
+                <div className="w-3 h-3 bg-accent rounded-full shadow-sm shadow-accent/50" />
               </div>
             </div>
           </motion.div>

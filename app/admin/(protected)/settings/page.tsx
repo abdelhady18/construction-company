@@ -11,6 +11,7 @@ import Skeleton from "@/components/ui/Skeleton";
 
 const defaultSettings = {
   company_name: "",
+  company_name_ar: "",
   company_tagline: "",
   company_tagline_ar: "",
   company_description: "",
@@ -41,16 +42,16 @@ const defaultSettings = {
     { day: "Sunday", open: "09:00", close: "13:00", closed: true },
   ]),
   about_stats: JSON.stringify([
-    { value: "15+", label: "Years Experience" },
-    { value: "200+", label: "Projects Completed" },
-    { value: "50+", label: "Expert Team" },
-    { value: "98%", label: "Client Satisfaction" },
+    { value: "20+", label: "Years Experience" },
+    { value: "50+", label: "Projects Completed" },
+    { value: "15+", label: "Expert Team" },
+    { value: "100%", label: "Client Satisfaction" },
   ]),
   about_stats_ar: JSON.stringify([
-    { value: "15+", label: "سنوات خبرة" },
-    { value: "200+", label: "مشروع مكتمل" },
-    { value: "50+", label: "فريق خبير" },
-    { value: "98%", label: "رضا العملاء" },
+    { value: "20+", label: "سنة خبرة" },
+    { value: "50+", label: "مشروع مكتمل" },
+    { value: "15+", label: "فريق خبير" },
+    { value: "100%", label: "رضا العملاء" },
   ]),
   footer_about: "",
   footer_about_ar: "",
@@ -59,7 +60,7 @@ const defaultSettings = {
 type Settings = typeof defaultSettings;
 
 const arabicKeys = new Set([
-  "company_tagline_ar", "company_description_ar",
+  "company_name_ar", "company_tagline_ar", "company_description_ar",
   "about_title_ar", "about_subtitle_ar", "about_story_ar", "about_story_2_ar",
   "contact_title_ar", "contact_subtitle_ar", "contact_address_ar",
   "about_stats_ar", "footer_about_ar",
@@ -78,7 +79,7 @@ const sections: { key: string; label: string; fields: FieldDef[] }[] = [
     key: "site",
     label: "Site Information",
     fields: [
-      { key: "company_name", label: "Company Name", type: "text", appears: "Header, Footer, Copyright", hasArabic: false },
+      { key: "company_name", label: "Company Name", type: "text", appears: "Header, Footer, Copyright", hasArabic: true },
       { key: "company_tagline", label: "Tagline", type: "text", appears: "Hero banner", hasArabic: true },
       { key: "company_description", label: "Description", type: "textarea", appears: "Hero banner subtitle", hasArabic: true },
       { key: "footer_about", label: "Footer About Text", type: "textarea", appears: "Footer sidebar", hasArabic: true },
@@ -112,6 +113,7 @@ const sections: { key: string; label: string; fields: FieldDef[] }[] = [
 function langKey(k: string, lang: "en" | "ar"): string {
   if (lang === "en") return k;
   switch (k) {
+    case "company_name": return "company_name_ar";
     case "company_tagline": return "company_tagline_ar";
     case "company_description": return "company_description_ar";
     case "about_title": return "about_title_ar";

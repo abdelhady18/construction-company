@@ -31,7 +31,7 @@ export default function Sidebar() {
     <aside className="w-64 bg-[#0d0d0d] text-white min-h-screen flex flex-col">
       <div className="p-6 border-b border-white/5">
         <Link href="/admin/dashboard" className="font-serif text-lg tracking-wide">
-          {s.company_name ? `${s.company_name} Admin` : "BuildCo Admin"}
+          {s.company_name ? `${s.company_name} Admin` : "Abu Suhaib Construction Admin"}
         </Link>
       </div>
       <nav className="flex-1 px-3 py-4 space-y-1">

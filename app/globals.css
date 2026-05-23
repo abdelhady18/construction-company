@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafaf8;
+  --background: #faf8f5;
   --foreground: #1a1a1a;
 }
 
@@ -9,14 +9,17 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-heading: #0d0d0d;
-  --color-primary: #2d2d2d;
-  --color-primary-light: #4a4a4a;
-  --color-accent: #a67c52;
-  --color-accent-light: #c4a07a;
+  --color-primary: #0f1b2d;
+  --color-primary-light: #1b2a4a;
+  --color-accent: #c8a758;
+  --color-accent-light: #dcc48e;
+  --color-accent-dark: #a8883c;
+  --color-sand: #e8ddd0;
+  --color-sand-light: #f5f0e8;
   --color-surface: #ffffff;
-  --color-muted: #8a8a8a;
-  --color-border: #e8e4de;
-  --color-glass: rgba(255, 255, 255, 0.7);
+  --color-muted: #8c8175;
+  --color-border: #e5ddd0;
+  --color-glass: rgba(250, 248, 245, 0.85);
   --font-serif: var(--font-prata);
   --font-sans: var(--font-sora);
   --animate-float: float 3s ease-in-out infinite;
@@ -78,4 +81,9 @@ body {
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }

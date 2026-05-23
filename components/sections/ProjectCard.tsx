@@ -44,7 +44,7 @@ export default function ProjectCard({ project, featured }: ProjectCardProps) {
   return (
     <>
       <Card
-        className={`overflow-hidden group cursor-pointer ${
+        className={`overflow-hidden group cursor-pointer border-sand hover:border-accent/40 transition-all duration-300 ${
           featured ? "lg:flex" : ""
         }`}
         onClick={() => images.length > 0 && openLightbox(0)}
@@ -52,7 +52,7 @@ export default function ProjectCard({ project, featured }: ProjectCardProps) {
         <div
           className={`relative overflow-hidden ${
             featured ? "lg:w-1/2 h-64 lg:h-auto" : "h-48"
-          } bg-border`}
+          } bg-sand`}
         >
           {images.length > 0 ? (
             <>
@@ -64,10 +64,10 @@ export default function ProjectCard({ project, featured }: ProjectCardProps) {
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               {images.length > 1 && (
-                <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs font-medium px-2.5 py-1 rounded-full flex items-center gap-1">
-                  <Icon name="crane" size={12} className="text-white" />
+                <div className="absolute bottom-2 right-2 bg-primary/80 text-white text-xs font-medium px-2.5 py-1 rounded-full flex items-center gap-1 backdrop-blur-sm">
+                  <Icon name="crane" size={12} className="text-accent" />
                   <span>+{images.length - 1}</span>
                 </div>
               )}
@@ -78,18 +78,18 @@ export default function ProjectCard({ project, featured }: ProjectCardProps) {
             </div>
           )}
           {project.category && (
-            <span className="absolute top-3 left-3 bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full">
+            <span className="absolute top-3 left-3 bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm">
               {project.category}
             </span>
           )}
 
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center backdrop-blur-sm">
-              <Icon name="arrowRight" size={18} className="text-heading" />
+            <div className="w-12 h-12 rounded-full bg-accent/90 flex items-center justify-center backdrop-blur-sm shadow-lg">
+              <Icon name="arrowRight" size={18} className="text-white" />
             </div>
           </div>
         </div>
-        <div className={featured ? "lg:w-1/2 p-8 flex flex-col justify-center min-w-0" : "p-6 min-w-0"}>
+        <div className={featured ? "lg:w-1/2 p-8 flex flex-col justify-center min-w-0 bg-surface" : "p-6 min-w-0 bg-surface"}>
           <h3 className={`font-semibold text-heading mb-2 ${featured ? "text-2xl" : "text-lg"}`}>
             {locale === "ar" && project.titleAr ? project.titleAr : project.title}
           </h3>

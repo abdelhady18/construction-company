@@ -27,7 +27,7 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition duration-500 ${
           scrolled
-            ? "bg-glass backdrop-blur-xl border-b border-border"
+            ? "bg-glass backdrop-blur-xl border-b border-border shadow-sm"
             : "bg-transparent"
         }`}
       >
@@ -39,7 +39,7 @@ export default function Navbar() {
                 scrolled ? "text-heading" : "text-white"
               }`}
             >
-              {s.company_name || "BuildCo"}
+              {s.company_name || "Abu Suhaib Construction"}
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
@@ -47,7 +47,7 @@ export default function Navbar() {
                 <a
                   key={href}
                   href={`#${href}`}
-                  className={`text-sm font-medium tracking-wide transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:h-[1px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full touch-manipulation ${
+                  className={`text-sm font-medium tracking-wide transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:h-[1px] after:bg-accent after:transition-all after:duration-300 after:w-0 hover:after:w-full touch-manipulation ${
                     scrolled
                       ? "text-muted hover:text-foreground"
                       : "text-white/80 hover:text-white"
