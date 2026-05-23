@@ -159,6 +159,16 @@ exports.Prisma.ContactMessageScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.TeamMemberScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  role: 'role',
+  imageUrl: 'imageUrl',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SiteSettingScalarFieldEnum = {
   id: 'id',
   key: 'key',
@@ -186,6 +196,7 @@ exports.Prisma.ModelName = {
   Service: 'Service',
   Project: 'Project',
   ContactMessage: 'ContactMessage',
+  TeamMember: 'TeamMember',
   SiteSetting: 'SiteSetting'
 };
 

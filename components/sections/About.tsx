@@ -1,22 +1,43 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useState, useEffect } from "react";
 import Icon from "@/components/ui/Icon";
 
 export default function About() {
-  const stats = [
+  const [s, setS] = useState<Record<string, string>>({});
+  const [team, setTeam] = useState<{ id: string; name: string; role: string; imageUrl: string | null }[]>([]);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((data) => setS(data))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/team")
+      .then((r) => r.json())
+      .then((data) => setTeam(data))
+      .catch(() => {});
+  }, []);
+
+  const defaultStats = [
     { value: "15+", label: "Years Experience" },
     { value: "200+", label: "Projects Completed" },
     { value: "50+", label: "Expert Team" },
     { value: "98%", label: "Client Satisfaction" },
   ];
 
-  const team = [
-    { name: "John Smith", role: "CEO & Founder", initials: "JS" },
-    { name: "Sarah Johnson", role: "Lead Architect", initials: "SJ" },
-    { name: "Mike Davis", role: "Project Manager", initials: "MD" },
-    { name: "Lisa Brown", role: "Design Director", initials: "LB" },
-  ];
+  let stats = defaultStats;
+  if (s.about_stats) {
+    try {
+      const parsed = JSON.parse(s.about_stats);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        stats = parsed;
+      }
+    } catch {}
+  }
 
   return (
     <section id="about" className="py-24 bg-background">
@@ -32,10 +53,10 @@ export default function About() {
             Who We Are
           </span>
           <h2 className="font-serif text-4xl sm:text-5xl text-heading mt-3">
-            About Us
+            {s.about_title || "About Us"}
           </h2>
           <p className="mt-4 text-muted max-w-2xl mx-auto">
-            Dedicated to delivering superior construction services since 2010
+            {s.about_subtitle || "Dedicated to delivering superior construction services since 2010"}
           </p>
         </motion.div>
 
@@ -79,15 +100,12 @@ export default function About() {
               Built on a Foundation of Trust
             </h3>
             <p className="text-muted leading-relaxed mb-4">
-              Founded in 2010, BuildCo has grown from a small local contractor to
-              one of the region&apos;s most trusted construction companies. We
-              pride ourselves on quality craftsmanship, innovative solutions, and
-              unwavering commitment to client satisfaction.
+              {s.about_story ||
+                "Founded in 2010, BuildCo has grown from a small local contractor to one of the region's most trusted construction companies. We pride ourselves on quality craftsmanship, innovative solutions, and unwavering commitment to client satisfaction."}
             </p>
             <p className="text-muted leading-relaxed">
-              Every project we undertake is a partnership. We listen, plan, and
-              execute with precision, ensuring your vision becomes reality. Our
-              team of experts brings decades of combined experience to every job.
+              {s.about_story_2 ||
+                "Every project we undertake is a partnership. We listen, plan, and execute with precision, ensuring your vision becomes reality. Our team of experts brings decades of combined experience to every job."}
             </p>
           </motion.div>
         </div>
@@ -122,23 +140,39 @@ export default function About() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <div className="group relative p-6 text-center border border-border rounded-xl bg-surface hover:border-accent/30 transition-colors duration-300">
-                  <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/20 transition-colors">
-                    <span className="text-lg font-semibold text-accent">{member.initials}</span>
+            {team.map((member, index) => {
+              const initials = member.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .toUpperCase()
+                .slice(0, 2);
+              return (
+                <motion.div
+                  key={member.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <div className="group relative p-6 text-center border border-border rounded-xl bg-surface hover:border-accent/30 transition-colors duration-300">
+                    {member.imageUrl ? (
+                      <img
+                        src={member.imageUrl}
+                        alt={member.name}
+                        className="w-16 h-16 rounded-full object-cover mx-auto mb-4"
+                      />
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/20 transition-colors">
+                        <span className="text-lg font-semibold text-accent">{initials}</span>
+                      </div>
+                    )}
+                    <h4 className="font-semibold text-heading">{member.name}</h4>
+                    <p className="text-sm text-muted mt-1">{member.role}</p>
                   </div>
-                  <h4 className="font-semibold text-heading">{member.name}</h4>
-                  <p className="text-sm text-muted mt-1">{member.role}</p>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>

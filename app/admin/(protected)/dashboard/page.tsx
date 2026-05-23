@@ -3,11 +3,12 @@ import StatsCard from "@/components/admin/StatsCard";
 import Button from "@/components/ui/Button";
 
 export default async function DashboardPage() {
-  const [serviceCount, projectCount, messageCount, unreadCount] = await Promise.all([
+  const [serviceCount, projectCount, messageCount, unreadCount, teamCount] = await Promise.all([
     prisma.service.count(),
     prisma.project.count(),
     prisma.contactMessage.count(),
     prisma.contactMessage.count({ where: { read: false } }),
+    prisma.teamMember.count(),
   ]);
 
   return (
@@ -15,9 +16,10 @@ export default async function DashboardPage() {
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-bold text-heading">Dashboard</h1>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         <StatsCard title="Services" value={serviceCount} icon="🏗️" />
         <StatsCard title="Projects" value={projectCount} icon="🏗️" />
+        <StatsCard title="Team" value={teamCount} icon="👥" />
         <StatsCard title="Messages" value={messageCount} icon="✉️" />
         <StatsCard title="Unread" value={unreadCount} icon="📬" />
       </div>
