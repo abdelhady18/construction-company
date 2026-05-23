@@ -26,8 +26,8 @@ describe("GET /api/projects", () => {
 
   it("returns all projects ordered by createdAt desc", async () => {
     const projects = [
-      { id: "1", title: "A", description: "d1", images: "[]", category: null, featured: false, createdAt: new Date("2024-01-01"), updatedAt: new Date() },
-      { id: "2", title: "B", description: "d2", images: "[]", category: "commercial", featured: true, createdAt: new Date("2024-01-02"), updatedAt: new Date() },
+      { id: "1", title: "A", description: "d1", titleAr: "", descriptionAr: "", images: "[]", category: null, featured: false, createdAt: new Date("2024-01-01"), updatedAt: new Date() },
+      { id: "2", title: "B", description: "d2", titleAr: "", descriptionAr: "", images: "[]", category: "commercial", featured: true, createdAt: new Date("2024-01-02"), updatedAt: new Date() },
     ];
     vi.mocked(prisma.project.findMany).mockResolvedValue(projects);
     const res = await GET();
@@ -77,12 +77,12 @@ describe("POST /api/projects", () => {
   it("passes explicit fields to prisma", async () => {
     vi.mocked(auth).mockResolvedValue({ user: { id: "1" } } as never);
     vi.mocked(prisma.project.create).mockResolvedValue({
-      id: "p1", title: "T", description: "D", images: '["img1.jpg"]', category: "commercial", featured: true, createdAt: new Date(), updatedAt: new Date(),
+      id: "p1", title: "T", description: "D", titleAr: "", descriptionAr: "", images: '["img1.jpg"]', category: "commercial", featured: true, createdAt: new Date(), updatedAt: new Date(),
     });
     const res = await POST(createRequest({ title: "T", description: "D", images: ["img1.jpg"], category: "commercial", featured: true }));
     expect(res.status).toBe(201);
     expect(prisma.project.create).toHaveBeenCalledWith({
-      data: { title: "T", description: "D", images: '["img1.jpg"]', category: "commercial", featured: true },
+      data: { title: "T", description: "D", titleAr: "", descriptionAr: "", images: '["img1.jpg"]', category: "commercial", featured: true },
     });
   });
 

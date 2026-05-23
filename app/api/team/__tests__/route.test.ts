@@ -69,12 +69,12 @@ describe("POST /api/team", () => {
   it("passes explicit fields to prisma", async () => {
     vi.mocked(auth).mockResolvedValue({ user: { id: "1" } } as never);
     vi.mocked(prisma.teamMember.create).mockResolvedValue({
-      id: "t1", name: "N", role: "R", imageUrl: "https://img.com/p.jpg", order: 3, createdAt: new Date(), updatedAt: new Date(),
+      id: "t1", name: "N", role: "R", nameAr: "", roleAr: "", imageUrl: "https://img.com/p.jpg", order: 3, createdAt: new Date(), updatedAt: new Date(),
     });
     const res = await POST(createRequest({ name: "N", role: "R", imageUrl: "https://img.com/p.jpg", order: 3 }));
     expect(res.status).toBe(201);
     expect(prisma.teamMember.create).toHaveBeenCalledWith({
-      data: { name: "N", role: "R", imageUrl: "https://img.com/p.jpg", order: 3 },
+      data: { name: "N", role: "R", nameAr: "", roleAr: "", imageUrl: "https://img.com/p.jpg", order: 3 },
     });
   });
 });

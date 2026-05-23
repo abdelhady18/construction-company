@@ -88,12 +88,12 @@ describe("POST /api/services", () => {
   it("passes explicit fields to prisma", async () => {
     vi.mocked(auth).mockResolvedValue({ user: { id: "1" } } as never);
     vi.mocked(prisma.service.create).mockResolvedValue({
-      id: "n", title: "T", description: "D", icon: "Wrench", imageUrl: "https://img.com/a.jpg", order: 5, createdAt: new Date(), updatedAt: new Date(),
+      id: "n", title: "T", description: "D", titleAr: "", descriptionAr: "", icon: "Wrench", imageUrl: "https://img.com/a.jpg", order: 5, createdAt: new Date(), updatedAt: new Date(),
     });
     const res = await POST(createRequest({ title: "T", description: "D", icon: "Wrench", imageUrl: "https://img.com/a.jpg", order: 5 }));
     expect(res.status).toBe(201);
     expect(prisma.service.create).toHaveBeenCalledWith({
-      data: { title: "T", description: "D", icon: "Wrench", imageUrl: "https://img.com/a.jpg", order: 5 },
+      data: { title: "T", description: "D", titleAr: "", descriptionAr: "", icon: "Wrench", imageUrl: "https://img.com/a.jpg", order: 5 },
     });
   });
 
