@@ -25,7 +25,7 @@ function parseStats(json: string): Stat[] {
   if (!json) return defaultStats;
   try {
     const parsed = JSON.parse(json);
-    if (Array.isArray(parsed) && parsed.length > 0 && parsed.every((s: any) => s.value && s.label)) {
+    if (Array.isArray(parsed) && parsed.length > 0 && parsed.every((s: any) => typeof s.value === "string" && typeof s.label === "string")) {
       return parsed;
     }
   } catch {}
