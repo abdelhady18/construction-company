@@ -1,10 +1,25 @@
 "use client";
 
 import { motion } from "motion/react";
+import { useState, useEffect } from "react";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 
 export default function Hero() {
+  const [s, setS] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((data) => setS(data))
+      .catch(() => {});
+  }, []);
+
+  const tagline = s.company_tagline || "Building Your Vision With Excellence";
+  const lastWith = tagline.lastIndexOf(" With ");
+  const before = lastWith >= 0 ? tagline.slice(0, lastWith) : "";
+  const after = lastWith >= 0 ? tagline.slice(lastWith + 1) : tagline;
+
   return (
     <section
       id="home"
@@ -36,17 +51,20 @@ export default function Hero() {
           >
             <span className="inline-flex items-center gap-2 text-accent text-sm font-medium tracking-[0.2em] uppercase mb-6">
               <span className="w-8 h-px bg-accent" />
-              Construction Excellence
+              {s.company_name || "BuildCo"}
             </span>
             <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-white leading-[1.1] tracking-tight">
-              Building Your Vision
-              <br />
-              <span className="text-accent">With Excellence</span>
+              {before && (
+                <>
+                  {before}
+                  <br />
+                </>
+              )}
+              <span className="text-accent">{after}</span>
             </h1>
             <p className="mt-6 text-base sm:text-lg text-white/60 max-w-xl leading-relaxed">
-              From concept to completion, we deliver exceptional construction
-              projects that stand the test of time. Your trusted partner in
-              building the future.
+              {s.company_description ||
+                "From concept to completion, we deliver exceptional construction projects that stand the test of time. Your trusted partner in building the future."}
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <Button

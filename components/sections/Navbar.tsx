@@ -16,11 +16,19 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [s, setS] = useState<Record<string, string>>({});
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((data) => setS(data))
+      .catch(() => {});
   }, []);
 
   return (
@@ -41,7 +49,7 @@ export default function Navbar() {
                 scrolled ? "text-heading" : "text-white"
               }`}
             >
-              BuildCo
+              {s.company_name || "BuildCo"}
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
