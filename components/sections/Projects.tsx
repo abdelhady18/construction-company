@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "motion/react";
+import { useCachedFetch } from "@/lib/api-cache";
 import Card from "@/components/ui/Card";
 import Skeleton from "@/components/ui/Skeleton";
 import EmptyState from "@/components/ui/EmptyState";
@@ -19,20 +19,9 @@ interface Project {
 }
 
 export default function Projects() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: projects, loading } = useCachedFetch<Project[]>("/api/projects");
   const t = useTranslations("projects");
   const prefersReducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    fetch("/api/projects")
-      .then((r) => r.json())
-      .then((data) => {
-        setProjects(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
 
   if (loading) {
     return (
@@ -61,7 +50,7 @@ export default function Projects() {
     );
   }
 
-  if (projects.length === 0) {
+  if (!projects || projects.length === 0) {
     return (
       <section id="projects" className="py-24 bg-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

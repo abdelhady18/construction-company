@@ -28,7 +28,7 @@ export default function Navbar() {
       <ScrollProgress />
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition duration-500 ${
-          scrolled
+          scrolled || mobileOpen
             ? "bg-glass backdrop-blur-xl border-b border-border shadow-sm"
             : "bg-transparent"
         }`}

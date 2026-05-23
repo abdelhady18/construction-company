@@ -6,6 +6,32 @@ import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
 import { useSettings } from "@/lib/SettingsContext";
 
+function WordReveal({ text, className, accent = false, delay = 0 }: { text: string; className?: string; accent?: boolean; delay?: number }) {
+  const words = text.split(" ");
+  return (
+    <span className={className}>
+      {words.map((word, i) => (
+        <span
+          key={i}
+          className={`inline-block animate-word-in ${accent ? "text-accent" : ""}`}
+          style={{ opacity: 0, animationDelay: `${delay + i * 0.12}s` }}
+        >
+          {word}
+          {i < words.length - 1 && <span className="inline-block">&nbsp;</span>}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+const particles = [
+  { className: "top-[15%] left-[8%] w-2 h-2 bg-accent/30 rounded-full", delay: "0s", duration: "4s" },
+  { className: "top-[30%] right-[12%] w-1.5 h-1.5 bg-accent/20 rounded-full", delay: "1.2s", duration: "5s" },
+  { className: "bottom-[25%] left-[15%] w-2.5 h-2.5 bg-accent/20 rounded-full", delay: "0.6s", duration: "4.5s" },
+];
+
+const iconNames = ["hardhat", "blueprint", "building", "crane", "ruler", "pillar", "compass", "hammer", "toolbox"] as const;
+
 export default function Hero() {
   const s = useSettings();
   const t = useTranslations("hero");
@@ -13,9 +39,12 @@ export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
 
   const tagline = locale === "ar" && s.company_tagline_ar ? s.company_tagline_ar : s.company_tagline || "Building Your Vision With Excellence";
-  const lastWith = tagline.lastIndexOf(" With ");
+  const splitter = " With ";
+  const lastWith = tagline.lastIndexOf(splitter);
   const before = lastWith >= 0 ? tagline.slice(0, lastWith) : "";
-  const after = lastWith >= 0 ? tagline.slice(lastWith + 1) : tagline;
+  const after = lastWith >= 0 ? tagline.slice(lastWith + splitter.length) : tagline;
+
+  const companyName = locale === "ar" && s.company_name_ar ? s.company_name_ar : s.company_name || "Abu Suhaib Construction";
 
   return (
     <section
@@ -35,7 +64,15 @@ export default function Hero() {
         }}
       />
 
-      <div className="absolute top-1/4 right-[10%] w-80 h-80 border border-accent/10 rounded-full" />
+      {particles.map((p, i) => (
+        <div
+          key={i}
+          className={`absolute ${p.className} animate-pulse-soft`}
+          style={{ animationDelay: p.delay, animationDuration: p.duration }}
+        />
+      ))}
+
+      <div className="absolute top-1/4 right-[10%] w-80 h-80 border border-accent/10 rounded-full animate-spin-slower" style={{ transformOrigin: "center" }} />
       <div className="absolute bottom-1/4 left-[5%] w-96 h-96 bg-accent/[0.02] rounded-full blur-3xl" />
       <div className="absolute top-1/3 left-1/3 w-px h-64 bg-gradient-to-b from-accent/30 to-transparent" />
       <div className="absolute top-1/2 right-1/4 w-px h-48 bg-gradient-to-b from-accent/20 to-transparent" />
@@ -53,22 +90,34 @@ export default function Hero() {
           >
             <span className="inline-flex items-center gap-2 text-accent text-sm font-medium tracking-[0.2em] uppercase mb-6">
               <span className="w-8 h-px bg-accent" />
-              {locale === "ar" && s.company_name_ar ? s.company_name_ar : s.company_name || "Abu Suhaib Construction"}
+              {companyName}
             </span>
             <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-white leading-[1.1] tracking-tight text-balance">
-              {before && (
+              {before ? (
                 <>
-                  {before}
+                  <WordReveal text={before} delay={0.2} />
                   <br />
+                  <WordReveal text={after} delay={0.6} accent />
                 </>
+              ) : (
+                <WordReveal text={tagline} delay={0.2} accent={locale !== "ar"} />
               )}
-              <span className="text-accent">{after}</span>
             </h1>
-            <p className="mt-6 text-base sm:text-lg text-white/60 max-w-xl leading-relaxed">
+            <motion.p
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+              animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+              transition={{ delay: 1.0, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-6 text-base sm:text-lg text-white/60 max-w-xl leading-relaxed"
+            >
               {locale === "ar" && s.company_description_ar ? s.company_description_ar : s.company_description ||
                 "From concept to completion, we deliver exceptional construction projects that stand the test of time. Your trusted partner in building the future."}
-            </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+            </motion.p>
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+              animate={prefersReducedMotion ? undefined : { opacity: 1, y: 0 }}
+              transition={{ delay: 1.3, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-10 flex flex-col sm:flex-row gap-4"
+            >
               <Button
                 variant="accent"
                 href="#contact"
@@ -83,7 +132,7 @@ export default function Hero() {
               >
                 {t("viewWork")}
               </Button>
-            </div>
+            </motion.div>
           </motion.div>
 
           <motion.div
@@ -93,44 +142,49 @@ export default function Hero() {
             className="hidden lg:flex justify-center"
           >
             <div className="relative w-full max-w-md aspect-square">
-              <div className="absolute inset-0 border border-accent/20 rounded-3xl" />
-              <div className="absolute inset-4 border border-accent/10 rounded-2xl" />
+              <motion.div
+                className="absolute inset-0 border border-accent/20 rounded-3xl"
+                initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.9 }}
+                animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
+                transition={{ delay: 0.8, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              />
+              <motion.div
+                className="absolute inset-4 border border-accent/10 rounded-2xl"
+                initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.9 }}
+                animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
+                transition={{ delay: 1.0, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              />
               <div className="absolute inset-8 flex items-center justify-center">
                 <div className="grid grid-cols-3 gap-4">
-                  {[Icon, Icon, Icon, Icon, Icon, Icon, Icon, Icon, Icon].map((_, i) => (
-                    <div
-                      key={i}
-                      className="w-10 h-10 flex items-center justify-center"
-                    >
-                      <Icon
-                        name={
-                          [
-                            "hardhat",
-                            "blueprint",
-                            "building",
-                            "crane",
-                            "ruler",
-                            "pillar",
-                            "compass",
-                            "hammer",
-                            "toolbox",
-                          ][i] as any
-                        }
-                        size={28}
-                        className="text-accent/30"
-                      />
+                  {iconNames.map((name) => (
+                    <div key={name} className="w-10 h-10 flex items-center justify-center">
+                      <Icon name={name} size={28} className="text-accent/30" />
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="absolute -bottom-3 -right-3 w-24 h-24 flex items-center justify-center bg-accent rounded-2xl shadow-lg shadow-accent/30">
+              <motion.div
+                className="absolute -bottom-3 -right-3 w-24 h-24 flex items-center justify-center bg-accent rounded-2xl shadow-lg shadow-accent/30"
+                initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.5, rotate: -20 }}
+                animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ delay: 1.5, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              >
                 <Icon name="hardhat" size={36} className="text-white" />
-              </div>
+              </motion.div>
 
-              <div className="absolute -top-4 -left-4 w-16 h-16 border border-accent/30 rounded-full flex items-center justify-center">
-                <div className="w-3 h-3 bg-accent rounded-full shadow-sm shadow-accent/50" />
-              </div>
+              <motion.div
+                className="absolute -top-4 -left-4 w-16 h-16 border border-accent/30 rounded-full flex items-center justify-center"
+                initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.5 }}
+                animate={prefersReducedMotion ? undefined : { opacity: 1, scale: 1 }}
+                transition={{ delay: 1.5, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <motion.div
+                  className="w-3 h-3 bg-accent rounded-full shadow-sm shadow-accent/50"
+                  animate={prefersReducedMotion ? undefined : { scale: [1, 1.3, 1] }}
+                  transition={{ delay: 2, duration: 2, repeat: Infinity }}
+                />
+              </motion.div>
             </div>
           </motion.div>
         </div>
@@ -142,12 +196,18 @@ export default function Hero() {
         transition={{ delay: 1.2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
-        <a href="#services" aria-label={t("scrollAria")} className="flex flex-col items-center gap-2 text-white/30 hover:text-accent transition-colors">
+        <motion.a
+          href="#services"
+          aria-label={t("scrollAria")}
+          className="flex flex-col items-center gap-2 text-white/30 hover:text-accent transition-colors"
+          animate={prefersReducedMotion ? undefined : { y: [0, 4, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+        >
           <span className="text-[10px] tracking-[0.2em] uppercase">{t("scroll")}</span>
-          <svg className="w-4 h-4 animate-float" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
-        </a>
+        </motion.a>
       </motion.div>
     </section>
   );

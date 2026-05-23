@@ -1,26 +1,48 @@
 "use client";
 
 import { useTranslations, useLocale } from "next-intl";
-import { motion, useReducedMotion } from "motion/react";
-import { useState, useEffect } from "react";
+import { motion, useReducedMotion, useInView } from "motion/react";
+import { useState, useEffect, useRef } from "react";
+import { useCachedFetch } from "@/lib/api-cache";
 import Icon from "@/components/ui/Icon";
 import { useSettings } from "@/lib/SettingsContext";
+
+function AnimatedStat({ value: raw, label }: { value: string; label: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true });
+  const [displayed, setDisplayed] = useState("0");
+  const num = parseInt(raw, 10);
+  const suffix = raw.replace(/[\d+]/g, "");
+  const isNumeric = !isNaN(num);
+
+  useEffect(() => {
+    if (!inView || !isNumeric) return;
+    let start: number | null = null;
+    const duration = 1500;
+    function step(ts: number) {
+      if (!start) start = ts;
+      const p = Math.min((ts - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setDisplayed(Math.round(eased * num) + suffix);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }, [inView, num, suffix, isNumeric]);
+
+  return (
+    <div ref={ref} className="relative p-6 text-center bg-surface border border-sand rounded-xl shadow-sm">
+      <div className="text-3xl font-serif text-accent-dark tabular-nums">{isNumeric ? displayed : raw}</div>
+      <div className="text-sm text-muted mt-1">{label}</div>
+    </div>
+  );
+}
 
 export default function About() {
   const s = useSettings();
   const t = useTranslations("about");
   const locale = useLocale();
-  const [team, setTeam] = useState<{ id: string; name: string; role: string; nameAr: string; roleAr: string; imageUrl: string | null }[]>([]);
+  const { data: team } = useCachedFetch<{ id: string; name: string; role: string; nameAr: string; roleAr: string; imageUrl: string | null }[]>("/api/team");
   const prefersReducedMotion = useReducedMotion();
-
-  useEffect(() => {
-    const ac = new AbortController();
-    fetch("/api/team", { signal: ac.signal })
-      .then((r) => r.json())
-      .then((data) => setTeam(data))
-      .catch(() => {});
-    return () => ac.abort();
-  }, []);
 
   const defaultStats = [
     { value: "20+", label: t("stats.years") },
@@ -119,13 +141,7 @@ export default function About() {
           className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24"
         >
           {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="relative p-6 text-center bg-surface border border-sand rounded-xl shadow-sm"
-            >
-              <div className="text-3xl font-serif text-accent-dark tabular-nums">{stat.value}</div>
-              <div className="text-sm text-muted mt-1">{stat.label}</div>
-            </div>
+            <AnimatedStat key={stat.label} value={stat.value} label={stat.label} />
           ))}
         </motion.div>
 
@@ -141,7 +157,7 @@ export default function About() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member, index) => {
+            {team?.map((member, index) => {
               const displayName = locale === "ar" && member.nameAr ? member.nameAr : member.name;
               const displayRole = locale === "ar" && member.roleAr ? member.roleAr : member.role;
               const initials = displayName
