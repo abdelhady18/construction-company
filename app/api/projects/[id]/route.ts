@@ -31,6 +31,8 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
     data: {
       title: data!.title,
       description: data!.description,
+      titleAr: data!.titleAr || "",
+      descriptionAr: data!.descriptionAr || "",
       images: JSON.stringify(data!.images),
       category: data!.category,
       featured: data!.featured,

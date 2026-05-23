@@ -11,7 +11,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     const ac = new AbortController();
     fetch("/api/settings", { signal: ac.signal })
       .then((r) => r.json())
-      .then(setSettings);
+      .then(setSettings)
+      .catch(() => {});
     return () => ac.abort();
   }, []);
 

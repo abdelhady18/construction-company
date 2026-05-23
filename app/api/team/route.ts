@@ -26,6 +26,8 @@ export async function POST(req: NextRequest) {
     data: {
       name: data!.name,
       role: data!.role,
+      nameAr: data!.nameAr || "",
+      roleAr: data!.roleAr || "",
       imageUrl: data!.imageUrl || null,
       order: data!.order,
     },

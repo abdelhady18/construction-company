@@ -26,6 +26,8 @@ export async function POST(req: NextRequest) {
     data: {
       title: data!.title,
       description: data!.description,
+      titleAr: data!.titleAr || "",
+      descriptionAr: data!.descriptionAr || "",
       images: JSON.stringify(data!.images),
       category: data!.category || null,
       featured: data!.featured,

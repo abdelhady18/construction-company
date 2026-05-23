@@ -3,6 +3,8 @@ import { z } from "zod";
 export const serviceSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
+  titleAr: z.string().optional().default(""),
+  descriptionAr: z.string().optional().default(""),
   icon: z.string().optional().default("Building"),
   imageUrl: z.string().nullable().optional(),
   order: z.number().optional().default(0),
@@ -11,6 +13,8 @@ export const serviceSchema = z.object({
 export const projectSchema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
+  titleAr: z.string().optional().default(""),
+  descriptionAr: z.string().optional().default(""),
   images: z.array(z.string()).optional().default([]),
   category: z.string().nullable().optional(),
   featured: z.boolean().optional().default(false),
@@ -19,6 +23,8 @@ export const projectSchema = z.object({
 export const teamMemberSchema = z.object({
   name: z.string().min(1, "Name is required"),
   role: z.string().min(1, "Role is required"),
+  nameAr: z.string().optional().default(""),
+  roleAr: z.string().optional().default(""),
   imageUrl: z.string().nullable().optional(),
   order: z.number().optional().default(0),
 });
