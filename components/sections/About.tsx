@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations, useLocale } from "next-intl";
 import { motion, useReducedMotion } from "motion/react";
 import { useState, useEffect } from "react";
 import Icon from "@/components/ui/Icon";
@@ -7,7 +8,9 @@ import { useSettings } from "@/lib/SettingsContext";
 
 export default function About() {
   const s = useSettings();
-  const [team, setTeam] = useState<{ id: string; name: string; role: string; imageUrl: string | null }[]>([]);
+  const t = useTranslations("about");
+  const locale = useLocale();
+  const [team, setTeam] = useState<{ id: string; name: string; role: string; nameAr: string; roleAr: string; imageUrl: string | null }[]>([]);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -20,16 +23,17 @@ export default function About() {
   }, []);
 
   const defaultStats = [
-    { value: "15+", label: "Years Experience" },
-    { value: "200+", label: "Projects Completed" },
-    { value: "50+", label: "Expert Team" },
-    { value: "98%", label: "Client Satisfaction" },
+    { value: "15+", label: t("stats.years") },
+    { value: "200+", label: t("stats.projects") },
+    { value: "50+", label: t("stats.team") },
+    { value: "98%", label: t("stats.satisfaction") },
   ];
 
   let stats = defaultStats;
-  if (s.about_stats) {
+  const statsKey = locale === "ar" && s.about_stats_ar ? s.about_stats_ar : s.about_stats;
+  if (statsKey) {
     try {
-      const parsed = JSON.parse(s.about_stats);
+      const parsed = JSON.parse(statsKey);
       if (Array.isArray(parsed) && parsed.length > 0) {
         stats = parsed;
       }
@@ -47,13 +51,13 @@ export default function About() {
           className="text-center mb-16"
         >
           <span className="text-accent text-sm font-medium tracking-[0.2em] uppercase">
-            Who We Are
+            {t("badge")}
           </span>
           <h2 className="font-serif text-4xl sm:text-5xl text-heading mt-3 text-balance">
-            {s.about_title || "About Us"}
+            {locale === "ar" && s.about_title_ar ? s.about_title_ar : s.about_title || "About Us"}
           </h2>
           <p className="mt-4 text-muted max-w-2xl mx-auto">
-            {s.about_subtitle || "Dedicated to delivering superior construction services since 2010"}
+            {locale === "ar" && s.about_subtitle_ar ? s.about_subtitle_ar : s.about_subtitle || "Dedicated to delivering superior construction services since 2010"}
           </p>
         </motion.div>
 
@@ -91,17 +95,17 @@ export default function About() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <span className="text-accent text-sm font-medium tracking-[0.2em] uppercase">
-              Our Story
+              {t("storyBadge")}
             </span>
             <h3 className="font-serif text-3xl text-heading mt-3 mb-6 text-balance">
-              Built on a Foundation of Trust
+              {t("storyHeading")}
             </h3>
             <p className="text-muted leading-relaxed mb-4">
-              {s.about_story ||
+              {locale === "ar" && s.about_story_ar ? s.about_story_ar : s.about_story ||
                 "Founded in 2010, BuildCo has grown from a small local contractor to one of the region's most trusted construction companies. We pride ourselves on quality craftsmanship, innovative solutions, and unwavering commitment to client satisfaction."}
             </p>
             <p className="text-muted leading-relaxed">
-              {s.about_story_2 ||
+              {locale === "ar" && s.about_story_2_ar ? s.about_story_2_ar : s.about_story_2 ||
                 "Every project we undertake is a partnership. We listen, plan, and execute with precision, ensuring your vision becomes reality. Our team of experts brings decades of combined experience to every job."}
             </p>
           </motion.div>
@@ -133,12 +137,14 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h3 className="font-serif text-3xl text-heading text-balance">Meet Our Team</h3>
+            <h3 className="font-serif text-3xl text-heading text-balance">{t("teamHeading")}</h3>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {team.map((member, index) => {
-              const initials = member.name
+              const displayName = locale === "ar" && member.nameAr ? member.nameAr : member.name;
+              const displayRole = locale === "ar" && member.roleAr ? member.roleAr : member.role;
+              const initials = displayName
                 .split(" ")
                 .map((n) => n[0])
                 .join("")
@@ -156,7 +162,7 @@ export default function About() {
                     {member.imageUrl ? (
                       <img
                         src={member.imageUrl}
-                        alt={member.name}
+                        alt={displayName}
                         width={64}
                         height={64}
                         loading="lazy"
@@ -167,8 +173,8 @@ export default function About() {
                         <span className="text-lg font-semibold text-accent">{initials}</span>
                       </div>
                     )}
-                    <h4 className="font-semibold text-heading">{member.name}</h4>
-                    <p className="text-sm text-muted mt-1">{member.role}</p>
+                    <h4 className="font-semibold text-heading">{displayName}</h4>
+                    <p className="text-sm text-muted mt-1">{displayRole}</p>
                   </div>
                 </motion.div>
               );

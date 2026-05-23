@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+import { useTranslations } from "next-intl";
 
 interface DayHours {
   day: string;
@@ -37,13 +38,17 @@ function parseHours(json: string): DayHours[] {
   return defaultDays;
 }
 
-export function formatHoursDisplay(json: string): string {
+export function formatHoursDisplay(
+  json: string,
+  locale?: string
+): string {
   const days = parseHours(json);
   const groups: { open: string; close: string; closed: boolean; days: string[] }[] = [];
-  const dayAbbr: Record<string, string> = {
-    Monday: "Mon", Tuesday: "Tue", Wednesday: "Wed", Thursday: "Thu",
-    Friday: "Fri", Saturday: "Sat", Sunday: "Sun",
-  };
+  const isArabic = locale === "ar";
+  const dayAbbr: Record<string, string> = isArabic
+    ? { Monday: "إثن", Tuesday: "ثلاث", Wednesday: "أربع", Thursday: "خميس", Friday: "جمعة", Saturday: "سبت", Sunday: "أحد" }
+    : { Monday: "Mon", Tuesday: "Tue", Wednesday: "Wed", Thursday: "Thu", Friday: "Fri", Saturday: "Sat", Sunday: "Sun" };
+  const closedLabel = isArabic ? "مغلق" : "Closed";
 
   for (const d of days) {
     const existing = groups.find(
@@ -56,8 +61,9 @@ export function formatHoursDisplay(json: string): string {
     }
   }
 
-  function fmt12(time: string): string {
+  function fmtTime(time: string): string {
     if (!time) return "";
+    if (isArabic) return time;
     const [h, m] = time.split(":").map(Number);
     const ampm = h >= 12 ? "PM" : "AM";
     const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
@@ -70,8 +76,8 @@ export function formatHoursDisplay(json: string): string {
       const range = labels.length > 2
         ? `${labels[0]}-${labels[labels.length - 1]}`
         : labels.join(", ");
-      if (g.closed) return `${range}: Closed`;
-      return `${range}: ${fmt12(g.open)} - ${fmt12(g.close)}`;
+      if (g.closed) return `${range}: ${closedLabel}`;
+      return `${range}: ${fmtTime(g.open)} - ${fmtTime(g.close)}`;
     })
     .join(" | ");
 }
@@ -82,6 +88,7 @@ export default function BusinessHoursPicker({
   onChange,
   className = "",
 }: BusinessHoursPickerProps) {
+  const t = useTranslations("businessHours");
   const days = useMemo(() => parseHours(value), [value]);
 
   const updateDay = useCallback(
@@ -120,7 +127,7 @@ export default function BusinessHoursPicker({
               className="flex items-center gap-3 p-3 rounded-lg border border-border bg-surface/50"
             >
               <span className="w-20 text-sm font-medium text-foreground shrink-0">
-                {day.day}
+                {t(`abbr.${day.day}`)}
               </span>
               <label className="flex items-center gap-2 text-sm text-muted shrink-0">
                 <input
@@ -129,7 +136,7 @@ export default function BusinessHoursPicker({
                   onChange={(e) => updateDay(i, "closed", e.target.checked)}
                   className="rounded border-border accent-accent"
                 />
-                Closed
+                {t("closed")}
               </label>
               {!day.closed && (
                 <>
@@ -137,15 +144,15 @@ export default function BusinessHoursPicker({
                     type="time"
                     value={day.open}
                     onChange={(e) => updateDay(i, "open", e.target.value)}
-                    aria-label={`${day.day} open time`}
+                    aria-label={t("openAria", { day: t(`day.${day.day}`) })}
                     className="flex-1 max-w-[140px] rounded-lg border border-border px-3 py-1.5 bg-transparent text-sm text-foreground focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition"
                   />
-                  <span className="text-muted text-sm">to</span>
+                  <span className="text-muted text-sm">{t("to")}</span>
                   <input
                     type="time"
                     value={day.close}
                     onChange={(e) => updateDay(i, "close", e.target.value)}
-                    aria-label={`${day.day} close time`}
+                    aria-label={t("closeAria", { day: t(`day.${day.day}`) })}
                     className="flex-1 max-w-[140px] rounded-lg border border-border px-3 py-1.5 bg-transparent text-sm text-foreground focus:border-accent focus:ring-2 focus:ring-accent/20 outline-none transition"
                   />
                 </>

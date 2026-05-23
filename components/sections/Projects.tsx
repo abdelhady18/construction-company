@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import { motion, useReducedMotion } from "motion/react";
 import Card from "@/components/ui/Card";
 import Skeleton from "@/components/ui/Skeleton";
@@ -11,6 +12,8 @@ interface Project {
   id: string;
   title: string;
   description: string;
+  titleAr: string;
+  descriptionAr: string;
   images: string;
   category: string | null;
 }
@@ -18,6 +21,7 @@ interface Project {
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const t = useTranslations("projects");
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -35,9 +39,9 @@ export default function Projects() {
       <section id="projects" className="py-24 bg-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="font-serif text-4xl sm:text-5xl text-heading">Our Projects</h2>
+            <h2 className="font-serif text-4xl sm:text-5xl text-heading">{t("loadingHeading")}</h2>
             <p className="mt-4 text-muted max-w-2xl mx-auto">
-              Showcasing our finest work across residential, commercial, and industrial sectors
+              {t("subtitle")}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -61,7 +65,7 @@ export default function Projects() {
     return (
       <section id="projects" className="py-24 bg-surface">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <EmptyState title="No projects yet" description="Projects will appear here once added." />
+          <EmptyState title={t("emptyTitle")} description={t("emptyDescription")} />
         </div>
       </section>
     );
@@ -80,13 +84,13 @@ export default function Projects() {
           className="text-center mb-16"
         >
           <span className="text-accent text-sm font-medium tracking-[0.2em] uppercase">
-            Our Portfolio
+            {t("badge")}
           </span>
           <h2 className="font-serif text-4xl sm:text-5xl text-heading mt-3 text-balance">
-            Featured Projects
+            {t("heading")}
           </h2>
           <p className="mt-4 text-muted max-w-2xl mx-auto">
-            Showcasing our finest work across residential, commercial, and industrial sectors
+            {t("subtitle")}
           </p>
         </motion.div>
 

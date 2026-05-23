@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 interface PhoneInputProps {
   label: string;
@@ -19,12 +20,12 @@ function formatPhone(value: string): string {
   return `+${digits[0]} (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
 }
 
-function validatePhone(value: string): string | null {
+const validatePhone = (value: string, errorMsg: string): string | null => {
   const digits = value.replace(/\D/g, "");
   if (!digits) return null;
-  if (digits.length < 11) return "Phone must be 10 digits after country code";
+  if (digits.length < 11) return errorMsg;
   return null;
-}
+};
 
 export default function PhoneInput({
   label,
@@ -33,8 +34,9 @@ export default function PhoneInput({
   required,
   className = "",
 }: PhoneInputProps) {
+  const t = useTranslations("phoneInput");
   const [touched, setTouched] = useState(false);
-  const error = touched ? validatePhone(value) : null;
+  const error = touched ? validatePhone(value, t("error")) : null;
 
   function handleChange(raw: string) {
     const formatted = formatPhone(raw);
@@ -55,7 +57,7 @@ export default function PhoneInput({
           value={value}
           onChange={(e) => handleChange(e.target.value)}
           onBlur={() => setTouched(true)}
-          placeholder="+1 (555) 123-4567"
+          placeholder={t("placeholder")}
           required={required}
           autoComplete="tel"
           className={`w-full rounded-lg border px-4 py-2.5 bg-transparent text-foreground placeholder:text-muted/60 outline-none transition ${
@@ -69,7 +71,7 @@ export default function PhoneInput({
             type="button"
             onClick={() => { onChange?.(""); setTouched(false); }}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-foreground transition-colors text-sm"
-            aria-label="Clear phone"
+            aria-label={t("clear")}
           >
             ✕
           </button>

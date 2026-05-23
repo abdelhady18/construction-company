@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { motion, useReducedMotion } from "motion/react";
 import Card from "@/components/ui/Card";
 import Skeleton from "@/components/ui/Skeleton";
@@ -24,6 +25,8 @@ interface Service {
   id: string;
   title: string;
   description: string;
+  titleAr: string;
+  descriptionAr: string;
   icon: string;
   order: number;
 }
@@ -31,6 +34,8 @@ interface Service {
 export default function Services() {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const t = useTranslations("services");
+  const locale = useLocale();
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -48,9 +53,9 @@ export default function Services() {
       <section id="services" className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="font-serif text-4xl sm:text-5xl text-heading">Our Services</h2>
+            <h2 className="font-serif text-4xl sm:text-5xl text-heading">{t("heading")}</h2>
             <p className="mt-4 text-muted max-w-2xl mx-auto">
-              Comprehensive construction solutions tailored to your needs
+              {t("subtitle")}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -72,7 +77,7 @@ export default function Services() {
     return (
       <section id="services" className="py-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <EmptyState title="No services yet" description="Services will appear here once added." />
+          <EmptyState title={t("emptyTitle")} description={t("emptyDescription")} />
         </div>
       </section>
     );
@@ -89,13 +94,13 @@ export default function Services() {
           className="text-center mb-16"
         >
           <span className="text-accent text-sm font-medium tracking-[0.2em] uppercase">
-            What We Do
+            {t("badge")}
           </span>
           <h2 className="font-serif text-4xl sm:text-5xl text-heading mt-3 text-balance">
-            Our Services
+            {t("heading")}
           </h2>
           <p className="mt-4 text-muted max-w-2xl mx-auto">
-            Comprehensive construction solutions tailored to your needs
+            {t("subtitle")}
           </p>
         </motion.div>
 
@@ -119,10 +124,10 @@ export default function Services() {
                   </div>
                   <div className="min-w-0">
                     <h3 className="text-lg font-semibold text-heading mb-2">
-                      {service.title}
+                      {locale === "ar" && service.titleAr ? service.titleAr : service.title}
                     </h3>
                     <p className="text-muted text-sm leading-relaxed break-words">
-                      {service.description}
+                      {locale === "ar" && service.descriptionAr ? service.descriptionAr : service.description}
                     </p>
                   </div>
                 </div>

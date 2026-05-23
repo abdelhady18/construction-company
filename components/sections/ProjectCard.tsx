@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { useLocale } from "next-intl";
 import Card from "@/components/ui/Card";
 import Icon from "@/components/ui/Icon";
 
@@ -12,6 +13,8 @@ interface ProjectCardProps {
     id: string;
     title: string;
     description: string;
+    titleAr: string;
+    descriptionAr: string;
     images: string;
     category: string | null;
   };
@@ -21,8 +24,9 @@ interface ProjectCardProps {
 export default function ProjectCard({ project, featured }: ProjectCardProps) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const locale = useLocale();
 
-  const images: string[] = JSON.parse(project.images);
+  const images: string[] = project.images ? JSON.parse(project.images) : [];
 
   function openLightbox(index: number) {
     setCurrentIndex(index);
@@ -87,10 +91,10 @@ export default function ProjectCard({ project, featured }: ProjectCardProps) {
         </div>
         <div className={featured ? "lg:w-1/2 p-8 flex flex-col justify-center min-w-0" : "p-6 min-w-0"}>
           <h3 className={`font-semibold text-heading mb-2 ${featured ? "text-2xl" : "text-lg"}`}>
-            {project.title}
+            {locale === "ar" && project.titleAr ? project.titleAr : project.title}
           </h3>
           <p className={`text-muted leading-relaxed line-clamp-3 break-words ${featured ? "text-base" : "text-sm"}`}>
-            {project.description}
+            {locale === "ar" && project.descriptionAr ? project.descriptionAr : project.description}
           </p>
         </div>
       </Card>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations, useLocale } from "next-intl";
 import { motion, useReducedMotion } from "motion/react";
 import Button from "@/components/ui/Button";
 import Icon from "@/components/ui/Icon";
@@ -7,11 +8,13 @@ import { useSettings } from "@/lib/SettingsContext";
 
 export default function Hero() {
   const s = useSettings();
+  const t = useTranslations("hero");
+  const locale = useLocale();
   const prefersReducedMotion = useReducedMotion();
   const noAnim = prefersReducedMotion ? { initial: false } : {};
   const noAnimStagger = prefersReducedMotion ? { initial: false } : {};
 
-  const tagline = s.company_tagline || "Building Your Vision With Excellence";
+  const tagline = locale === "ar" && s.company_tagline_ar ? s.company_tagline_ar : s.company_tagline || "Building Your Vision With Excellence";
   const lastWith = tagline.lastIndexOf(" With ");
   const before = lastWith >= 0 ? tagline.slice(0, lastWith) : "";
   const after = lastWith >= 0 ? tagline.slice(lastWith + 1) : tagline;
@@ -59,7 +62,7 @@ export default function Hero() {
               <span className="text-accent">{after}</span>
             </h1>
             <p className="mt-6 text-base sm:text-lg text-white/60 max-w-xl leading-relaxed">
-              {s.company_description ||
+              {locale === "ar" && s.company_description_ar ? s.company_description_ar : s.company_description ||
                 "From concept to completion, we deliver exceptional construction projects that stand the test of time. Your trusted partner in building the future."}
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
@@ -68,14 +71,14 @@ export default function Hero() {
                 href="#contact"
                 className="text-base px-8 py-4"
               >
-                Start Your Project
+                {t("startProject")}
               </Button>
               <Button
                 variant="outline"
                 href="#projects"
                 className="text-base px-8 py-4 border-white/30 text-white hover:bg-white hover:text-[#0d0d0d]"
               >
-                View Our Work
+                {t("viewWork")}
               </Button>
             </div>
           </motion.div>
@@ -136,8 +139,8 @@ export default function Hero() {
         transition={{ delay: 1.2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
-        <a href="#services" aria-label="Scroll down" className="flex flex-col items-center gap-2 text-white/30 hover:text-accent transition-colors">
-          <span className="text-[10px] tracking-[0.2em] uppercase">Scroll</span>
+        <a href="#services" aria-label={t("scrollAria")} className="flex flex-col items-center gap-2 text-white/30 hover:text-accent transition-colors">
+          <span className="text-[10px] tracking-[0.2em] uppercase">{t("scroll")}</span>
           <svg className="w-4 h-4 animate-float" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>

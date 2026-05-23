@@ -1,10 +1,14 @@
 "use client";
 
+import { useTranslations, useLocale } from "next-intl";
 import Icon from "@/components/ui/Icon";
 import { useSettings } from "@/lib/SettingsContext";
 
 export default function Footer() {
   const s = useSettings();
+  const t = useTranslations("footer");
+  const lt = useTranslations("nav");
+  const locale = useLocale();
 
   return (
     <footer className="bg-[#0d0d0d] text-white border-t border-white/5">
@@ -14,20 +18,20 @@ export default function Footer() {
             <h3 className="font-serif text-xl tracking-wide">
               {s.company_name || "BuildCo"}
             </h3>
-            {s.footer_about && (
+            {(locale === "ar" ? s.footer_about_ar : s.footer_about) && (
               <p className="text-white/40 text-sm mt-2 max-w-xs">
-                {s.footer_about}
+                {locale === "ar" && s.footer_about_ar ? s.footer_about_ar : s.footer_about}
               </p>
             )}
           </div>
           <div className="flex items-center gap-8 min-w-0">
-            {["Home", "Services", "Projects", "About", "Contact"].map((link) => (
+            {(["home", "services", "projects", "about", "contact"] as const).map((href) => (
               <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
+                key={href}
+                href={`#${href}`}
                 className="text-white/40 hover:text-accent text-sm transition-colors"
               >
-                {link}
+                {lt(href)}
               </a>
             ))}
           </div>
@@ -44,7 +48,7 @@ export default function Footer() {
             </a>
           </div>
           <p className="text-white/20 text-xs">
-            &copy; {new Date().getFullYear()} {s.company_name || "BuildCo"}. All rights reserved.
+            {t("copyright", { year: new Date().getFullYear(), company: s.company_name || "BuildCo" })}
           </p>
         </div>
       </div>

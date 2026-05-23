@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { motion, useReducedMotion } from "motion/react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
@@ -11,6 +12,8 @@ import { formatHoursDisplay } from "@/components/ui/BusinessHoursPicker";
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const settings = useSettings();
+  const t = useTranslations("contact");
+  const locale = useLocale();
   const prefersReducedMotion = useReducedMotion();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -68,13 +71,13 @@ export default function Contact() {
           className="text-center mb-16"
         >
           <span className="text-accent text-sm font-medium tracking-[0.2em] uppercase">
-            Get In Touch
+            {t("badge")}
           </span>
           <h2 className="font-serif text-4xl sm:text-5xl text-white mt-3 text-balance">
-            {settings.contact_title || "Contact Us"}
+            {locale === "ar" && settings.contact_title_ar ? settings.contact_title_ar : settings.contact_title || "Contact Us"}
           </h2>
           <p className="mt-4 text-white/50 max-w-2xl mx-auto">
-            {settings.contact_subtitle || "Ready to start your project? Get in touch with us today"}
+            {locale === "ar" && settings.contact_subtitle_ar ? settings.contact_subtitle_ar : settings.contact_subtitle || "Ready to start your project? Get in touch with us today"}
           </p>
         </motion.div>
 
@@ -90,34 +93,34 @@ export default function Contact() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <Input
-                    label="Full Name"
+                    label={t("form.nameLabel")}
                     name="name"
                     required
-                    placeholder="John Doe"
+                    placeholder={t("form.namePlaceholder")}
                     className="[&_input]:bg-transparent [&_input]:border-white/20 [&_input]:text-white [&_input]:placeholder:text-white/30 [&_input]:focus:border-accent [&_label]:text-white/80"
                   />
                   <Input
-                    label="Email"
+                    label={t("form.emailLabel")}
                     name="email"
                     type="email"
                     required
-                    placeholder="john@example.com"
+                    placeholder={t("form.emailPlaceholder")}
                     className="[&_input]:bg-transparent [&_input]:border-white/20 [&_input]:text-white [&_input]:placeholder:text-white/30 [&_input]:focus:border-accent [&_label]:text-white/80"
                   />
                 </div>
                 <Input
-                  label="Phone"
+                  label={t("form.phoneLabel")}
                   name="phone"
                   type="tel"
-                  placeholder="+1 (555) 123-4567"
+                  placeholder={t("form.phonePlaceholder")}
                   className="[&_input]:bg-transparent [&_input]:border-white/20 [&_input]:text-white [&_input]:placeholder:text-white/30 [&_input]:focus:border-accent [&_label]:text-white/80"
                 />
                 <Input
-                  label="Message"
+                  label={t("form.messageLabel")}
                   name="message"
                   type="textarea"
                   required
-                  placeholder="Tell us about your project..."
+                  placeholder={t("form.messagePlaceholder")}
                   className="[&_textarea]:bg-transparent [&_textarea]:border-white/20 [&_textarea]:text-white [&_textarea]:placeholder:text-white/30 [&_textarea]:focus:border-accent [&_label]:text-white/80"
                 />
 
@@ -127,17 +130,17 @@ export default function Contact() {
                   className="w-full"
                   disabled={status === "loading"}
                 >
-                  {status === "loading" ? "Sending…" : "Send Message"}
+                  {status === "loading" ? t("form.sending") : t("form.submit")}
                 </Button>
 
                 {status === "success" && (
                   <p className="text-green-400 text-sm text-center">
-                    Message sent successfully! We&apos;ll get back to you soon.
+                    {t("form.success")}
                   </p>
                 )}
                 {status === "error" && (
                   <p className="text-red-400 text-sm text-center">
-                    Failed to send message. Please try again.
+                    {t("form.error")}
                   </p>
                 )}
               </form>
@@ -153,7 +156,7 @@ export default function Contact() {
           >
             <div className="space-y-8">
               <div>
-                <h3 className="font-serif text-2xl text-white mb-6">Contact Info</h3>
+                <h3 className="font-serif text-2xl text-white mb-6">{t("info.heading")}</h3>
                 <div className="space-y-5">
                   {settings.contact_address && (
                     <div className="flex items-start gap-4">
@@ -161,8 +164,10 @@ export default function Contact() {
                         <Icon name="location" size={16} className="text-accent" />
                       </div>
                       <div>
-                        <p className="font-medium text-white text-sm">Address</p>
-                        <p className="text-white/50 text-sm mt-0.5">{settings.contact_address}</p>
+                        <p className="font-medium text-white text-sm">{t("info.address")}</p>
+                        <p className="text-white/50 text-sm mt-0.5">
+                          {locale === "ar" && settings.contact_address_ar ? settings.contact_address_ar : settings.contact_address}
+                        </p>
                       </div>
                     </div>
                   )}
@@ -172,7 +177,7 @@ export default function Contact() {
                         <Icon name="phone" size={16} className="text-accent" />
                       </div>
                       <div>
-                        <p className="font-medium text-white text-sm">Phone</p>
+                        <p className="font-medium text-white text-sm">{t("info.phone")}</p>
                         <p className="text-white/50 text-sm mt-0.5">{settings.contact_phone}</p>
                       </div>
                     </div>
@@ -183,7 +188,7 @@ export default function Contact() {
                         <Icon name="mail" size={16} className="text-accent" />
                       </div>
                       <div>
-                        <p className="font-medium text-white text-sm">Email</p>
+                        <p className="font-medium text-white text-sm">{t("info.email")}</p>
                         <p className="text-white/50 text-sm mt-0.5">{settings.contact_email}</p>
                       </div>
                     </div>
@@ -194,8 +199,8 @@ export default function Contact() {
                         <Icon name="clock" size={16} className="text-accent" />
                       </div>
                       <div>
-                        <p className="font-medium text-white text-sm">Hours</p>
-                        <p className="text-white/50 text-sm mt-0.5">{formatHoursDisplay(settings.contact_hours)}</p>
+                        <p className="font-medium text-white text-sm">{t("info.hours")}</p>
+                        <p className="text-white/50 text-sm mt-0.5">{formatHoursDisplay(settings.contact_hours, locale)}</p>
                       </div>
                     </div>
                   )}
@@ -203,10 +208,9 @@ export default function Contact() {
               </div>
 
               <div className="border border-white/10 rounded-xl p-6">
-                <h3 className="font-semibold text-white mb-2">Free Consultation</h3>
+                <h3 className="font-semibold text-white mb-2">{t("consultation.heading")}</h3>
                 <p className="text-white/50 text-sm leading-relaxed">
-                  Schedule a free consultation with our team. We&apos;ll discuss your
-                  project requirements and provide a detailed estimate.
+                  {t("consultation.text")}
                 </p>
               </div>
             </div>

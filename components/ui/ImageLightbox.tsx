@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useCallback } from "react";
+import { useTranslations } from "next-intl";
 
 interface ImageLightboxProps {
   images: string[];
@@ -19,6 +20,7 @@ export default function ImageLightbox({
   onNext,
   onSelect,
 }: ImageLightboxProps) {
+  const t = useTranslations("imageLightbox");
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -42,7 +44,7 @@ export default function ImageLightbox({
       className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center"
       role="dialog"
       aria-modal="true"
-      aria-label="Image gallery"
+      aria-label={t("galleryAria")}
       onClick={onClose}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClose(); }}
       style={{ overscrollBehavior: 'contain' }}
@@ -50,7 +52,7 @@ export default function ImageLightbox({
       <button
         onClick={onClose}
         className="absolute top-4 right-4 text-white/70 hover:text-white text-3xl z-10 cursor-pointer"
-        aria-label="Close"
+        aria-label={t("closeAria")}
       >
         ✕
       </button>
@@ -63,7 +65,7 @@ export default function ImageLightbox({
           <button
             onClick={onPrev}
             className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white rounded-full p-3 transition cursor-pointer z-10"
-            aria-label="Previous"
+            aria-label={t("prevAria")}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -73,7 +75,7 @@ export default function ImageLightbox({
 
         <img
           src={images[currentIndex]}
-          alt={`Image ${currentIndex + 1}`}
+          alt={t("imageAlt", { n: currentIndex + 1 })}
           className="max-h-[80vh] max-w-full object-contain rounded-lg"
         />
 
@@ -81,7 +83,7 @@ export default function ImageLightbox({
           <button
             onClick={onNext}
             className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 text-white rounded-full p-3 transition cursor-pointer z-10"
-            aria-label="Next"
+            aria-label={t("nextAria")}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
