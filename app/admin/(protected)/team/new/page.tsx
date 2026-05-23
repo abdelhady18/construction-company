@@ -11,6 +11,7 @@ export default function NewTeamMemberPage() {
   const [imageUrl, setImageUrl] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [lang, setLang] = useState<"en" | "ar">("en");
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -41,6 +42,8 @@ export default function NewTeamMemberPage() {
       body: JSON.stringify({
         name: form.get("name"),
         role: form.get("role"),
+        nameAr: form.get("nameAr") || "",
+        roleAr: form.get("roleAr") || "",
         imageUrl: imageUrl || null,
         order: Number(form.get("order")) || 0,
       }),
@@ -56,8 +59,38 @@ export default function NewTeamMemberPage() {
     <div>
       <h1 className="text-2xl font-bold text-heading mb-8">New Team Member</h1>
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-        <Input label="Name" name="name" required placeholder="e.g. John Smith" />
-        <Input label="Job Title" name="role" required placeholder="e.g. CEO & Founder" />
+        <div className="flex bg-border rounded-lg p-0.5 w-fit">
+          <button
+            type="button"
+            onClick={() => setLang("en")}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${
+              lang === "en" ? "bg-accent text-white" : "text-muted hover:text-foreground"
+            }`}
+          >
+            English
+          </button>
+          <button
+            type="button"
+            onClick={() => setLang("ar")}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${
+              lang === "ar" ? "bg-accent text-white" : "text-muted hover:text-foreground"
+            }`}
+          >
+            العربية
+          </button>
+        </div>
+
+        {lang === "en" ? (
+          <>
+            <Input label="Name" name="name" required placeholder="e.g. John Smith" />
+            <Input label="Job Title" name="role" required placeholder="e.g. CEO & Founder" />
+          </>
+        ) : (
+          <>
+            <Input label="Name (Arabic)" name="nameAr" placeholder="الاسم بالعربية" />
+            <Input label="Job Title (Arabic)" name="roleAr" placeholder="المسمى الوظيفي بالعربية" />
+          </>
+        )}
 
         <div>
           <label className="text-sm font-medium text-foreground block mb-2">

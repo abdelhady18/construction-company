@@ -24,6 +24,8 @@ interface Service {
   id: string;
   title: string;
   description: string;
+  titleAr: string;
+  descriptionAr: string;
   icon: string;
   order: number;
 }
@@ -33,6 +35,7 @@ export default function EditServicePage() {
   const router = useRouter();
   const [service, setService] = useState<Service | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [lang, setLang] = useState<"en" | "ar">("en");
 
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
@@ -47,7 +50,8 @@ export default function EditServicePage() {
     const ac = new AbortController();
     fetch(`/api/services/${id}`, { signal: ac.signal })
       .then((res) => res.json())
-      .then((data) => setService(data));
+      .then((data) => setService(data))
+      .catch(() => {});
     return () => ac.abort();
   }, [id]);
 
@@ -62,6 +66,8 @@ export default function EditServicePage() {
       body: JSON.stringify({
         title: form.get("title"),
         description: form.get("description"),
+        titleAr: form.get("titleAr") || "",
+        descriptionAr: form.get("descriptionAr") || "",
         icon: form.get("icon"),
         order: Number(form.get("order")),
       }),
@@ -86,8 +92,39 @@ export default function EditServicePage() {
     <div>
       <h1 className="text-2xl font-bold text-heading mb-8">Edit Service</h1>
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-        <Input label="Title" name="title" required defaultValue={service.title} />
-        <Input label="Description" name="description" type="textarea" required defaultValue={service.description} />
+        <div className="flex bg-border rounded-lg p-0.5 w-fit">
+          <button
+            type="button"
+            onClick={() => setLang("en")}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${
+              lang === "en" ? "bg-accent text-white" : "text-muted hover:text-foreground"
+            }`}
+          >
+            English
+          </button>
+          <button
+            type="button"
+            onClick={() => setLang("ar")}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${
+              lang === "ar" ? "bg-accent text-white" : "text-muted hover:text-foreground"
+            }`}
+          >
+            العربية
+          </button>
+        </div>
+
+        {lang === "en" ? (
+          <>
+            <Input label="Title" name="title" required defaultValue={service.title} />
+            <Input label="Description" name="description" type="textarea" required defaultValue={service.description} />
+          </>
+        ) : (
+          <>
+            <Input label="Title (Arabic)" name="titleAr" defaultValue={service.titleAr} />
+            <Input label="Description (Arabic)" name="descriptionAr" type="textarea" defaultValue={service.descriptionAr} />
+          </>
+        )}
+
         <IconSelect
           label="Icon"
           name="icon"

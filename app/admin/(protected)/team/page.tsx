@@ -25,6 +25,7 @@ export default function TeamPage() {
     fetch("/api/team", { signal: ac.signal })
       .then((res) => res.json())
       .then((data) => setMembers(data))
+      .catch(() => {})
       .finally(() => setLoading(false));
     return () => ac.abort();
   }, []);

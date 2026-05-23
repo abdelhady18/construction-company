@@ -28,6 +28,7 @@ export default function MessagesPage() {
     fetch("/api/contact", { signal: ac.signal })
       .then((res) => res.json())
       .then((data) => setMessages(data))
+      .catch(() => {})
       .finally(() => setLoading(false));
     return () => ac.abort();
   }, []);

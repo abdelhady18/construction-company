@@ -27,6 +27,7 @@ export default function ServicesPage() {
     fetch("/api/services", { signal: ac.signal })
       .then((res) => res.json())
       .then((data) => setServices(data))
+      .catch(() => {})
       .finally(() => setLoading(false));
     return () => ac.abort();
   }, []);

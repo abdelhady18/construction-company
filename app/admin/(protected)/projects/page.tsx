@@ -25,6 +25,7 @@ export default function ProjectsPage() {
     fetch("/api/projects", { signal: ac.signal })
       .then((res) => res.json())
       .then((data) => setProjects(data))
+      .catch(() => {})
       .finally(() => setLoading(false));
     return () => ac.abort();
   }, []);

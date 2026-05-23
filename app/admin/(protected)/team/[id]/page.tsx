@@ -10,6 +10,8 @@ interface TeamMember {
   id: string;
   name: string;
   role: string;
+  nameAr: string;
+  roleAr: string;
   imageUrl: string | null;
   order: number;
 }
@@ -22,6 +24,7 @@ export default function EditTeamMemberPage() {
   const [imageUrl, setImageUrl] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [lang, setLang] = useState<"en" | "ar">("en");
 
   useEffect(() => {
     const ac = new AbortController();
@@ -30,7 +33,8 @@ export default function EditTeamMemberPage() {
       .then((data) => {
         setMember(data);
         if (data) setImageUrl(data.imageUrl || "");
-      });
+      })
+      .catch(() => {});
     return () => ac.abort();
   }, [id]);
 
@@ -63,8 +67,10 @@ export default function EditTeamMemberPage() {
       body: JSON.stringify({
         name: form.get("name"),
         role: form.get("role"),
+        nameAr: form.get("nameAr") || "",
+        roleAr: form.get("roleAr") || "",
         imageUrl: imageUrl || null,
-        order: Number(form.get("order")),
+        order: Number(form.get("order")) || 0,
       }),
     });
 
@@ -87,31 +93,50 @@ export default function EditTeamMemberPage() {
     <div>
       <h1 className="text-2xl font-bold text-heading mb-8">Edit Team Member</h1>
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-        <Input label="Name" name="name" required defaultValue={member.name} />
-        <Input label="Job Title" name="role" required defaultValue={member.role} />
+        <div className="flex bg-border rounded-lg p-0.5 w-fit">
+          <button
+            type="button"
+            onClick={() => setLang("en")}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${
+              lang === "en" ? "bg-accent text-white" : "text-muted hover:text-foreground"
+            }`}
+          >
+            English
+          </button>
+          <button
+            type="button"
+            onClick={() => setLang("ar")}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${
+              lang === "ar" ? "bg-accent text-white" : "text-muted hover:text-foreground"
+            }`}
+          >
+            العربية
+          </button>
+        </div>
+
+        {lang === "en" ? (
+          <>
+            <Input label="Name" name="name" required defaultValue={member.name} />
+            <Input label="Job Title" name="role" required defaultValue={member.role} />
+          </>
+        ) : (
+          <>
+            <Input label="Name (Arabic)" name="nameAr" defaultValue={member.nameAr} />
+            <Input label="Job Title (Arabic)" name="roleAr" defaultValue={member.roleAr} />
+          </>
+        )}
 
         <div>
           <label className="text-sm font-medium text-foreground block mb-2">
             Photo
           </label>
-          {imageUrl ? (
+          {imageUrl && (
             <div className="mb-3">
               <img
                 src={imageUrl}
                 alt="Preview"
                 className="w-24 h-24 rounded-full object-cover border border-border"
               />
-            </div>
-          ) : (
-            <div className="mb-3 w-24 h-24 rounded-full bg-accent/10 flex items-center justify-center border border-border">
-              <span className="text-lg font-semibold text-accent">
-                {member.name
-                  .split(" ")
-                  .map((n) => n[0])
-                  .join("")
-                  .toUpperCase()
-                  .slice(0, 2)}
-              </span>
             </div>
           )}
           <input
@@ -138,16 +163,17 @@ export default function EditTeamMemberPage() {
               Remove
             </button>
           )}
+          <p className="mt-1 text-xs text-muted">
+            Max 500 KB. If no photo, initials will be shown instead.
+          </p>
         </div>
 
-        <Input label="Order" name="order" type="number" defaultValue={String(member.order)} />
+        <Input label="Order" name="order" type="number" placeholder="0" defaultValue={String(member.order)} />
         <div className="flex gap-4">
           <Button type="submit" variant="primary" disabled={submitting}>
             {submitting ? "Saving..." : "Save Changes"}
           </Button>
-          <Button variant="ghost" href="/admin/team">
-            Cancel
-          </Button>
+          <Button variant="ghost" href="/admin/team">Cancel</Button>
         </div>
       </form>
     </div>

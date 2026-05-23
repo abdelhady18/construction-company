@@ -11,6 +11,8 @@ interface Project {
   id: string;
   title: string;
   description: string;
+  titleAr: string;
+  descriptionAr: string;
   images: string;
   category: string | null;
   featured: boolean;
@@ -22,6 +24,7 @@ export default function EditProjectPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [images, setImages] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const [lang, setLang] = useState<"en" | "ar">("en");
 
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
@@ -38,8 +41,9 @@ export default function EditProjectPage() {
       .then((res) => res.json())
       .then((data) => {
         setProject(data);
-        if (data) setImages(JSON.parse(data.images));
-      });
+        if (data) setImages(data.images ? JSON.parse(data.images) : []);
+      })
+      .catch(() => {});
     return () => ac.abort();
   }, [id]);
 
@@ -54,6 +58,8 @@ export default function EditProjectPage() {
       body: JSON.stringify({
         title: form.get("title"),
         description: form.get("description"),
+        titleAr: form.get("titleAr") || "",
+        descriptionAr: form.get("descriptionAr") || "",
         category: form.get("category"),
         featured: form.get("featured") === "on",
         images,
@@ -79,8 +85,39 @@ export default function EditProjectPage() {
     <div>
       <h1 className="text-2xl font-bold text-heading mb-8">Edit Project</h1>
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-        <Input label="Title" name="title" required defaultValue={project.title} />
-        <Input label="Description" name="description" type="textarea" required defaultValue={project.description} />
+        <div className="flex bg-border rounded-lg p-0.5 w-fit">
+          <button
+            type="button"
+            onClick={() => setLang("en")}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${
+              lang === "en" ? "bg-accent text-white" : "text-muted hover:text-foreground"
+            }`}
+          >
+            English
+          </button>
+          <button
+            type="button"
+            onClick={() => setLang("ar")}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${
+              lang === "ar" ? "bg-accent text-white" : "text-muted hover:text-foreground"
+            }`}
+          >
+            العربية
+          </button>
+        </div>
+
+        {lang === "en" ? (
+          <>
+            <Input label="Title" name="title" required defaultValue={project.title} />
+            <Input label="Description" name="description" type="textarea" required defaultValue={project.description} />
+          </>
+        ) : (
+          <>
+            <Input label="Title (Arabic)" name="titleAr" defaultValue={project.titleAr} />
+            <Input label="Description (Arabic)" name="descriptionAr" type="textarea" defaultValue={project.descriptionAr} />
+          </>
+        )}
+
         <Input label="Category" name="category" defaultValue={project.category || ""} />
         <ImageUploader images={images} onChange={setImages} />
         <label className="flex items-center gap-2 text-sm font-medium text-foreground">

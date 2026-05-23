@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 interface ImageUploaderProps {
   images: string[];
@@ -8,6 +9,7 @@ interface ImageUploaderProps {
 }
 
 export default function ImageUploader({ images, onChange }: ImageUploaderProps) {
+  const t = useTranslations("imageUploader");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,7 +45,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
 
   return (
     <div>
-      <label className="text-sm font-medium text-foreground block mb-2">Images</label>
+      <label className="text-sm font-medium text-foreground block mb-2">{t("label")}</label>
       <div className="flex flex-wrap gap-3 mb-3">
         {images.map((url, i) => (
           <div key={i} className="relative w-24 h-24 rounded-lg overflow-hidden border border-border">
@@ -52,7 +54,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
               type="button"
               onClick={() => removeImage(i)}
               className="absolute top-1 right-1 bg-red-500 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center cursor-pointer"
-              aria-label="Remove image"
+              aria-label={t("removeAria")}
             >
               ×
             </button>
@@ -60,7 +62,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
         ))}
         {images.length === 0 && (
           <div className="w-24 h-24 rounded-lg border-2 border-dashed border-border flex items-center justify-center text-muted text-sm">
-            No images
+            {t("noImages")}
           </div>
         )}
       </div>
@@ -77,7 +79,7 @@ export default function ImageUploader({ images, onChange }: ImageUploaderProps) 
         disabled={uploading}
         className="px-4 py-2 text-sm font-medium text-accent bg-accent/10 rounded-lg hover:bg-accent/20 disabled:opacity-50 cursor-pointer"
       >
-        {uploading ? "Uploading…" : "Add Image"}
+        {uploading ? t("uploading") : t("addImage")}
       </button>
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
     </div>

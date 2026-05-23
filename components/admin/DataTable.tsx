@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 interface Column {
   key: string;
   label: string;
@@ -14,6 +16,7 @@ interface DataTableProps {
 }
 
 export default function DataTable({ columns, data, onView, onDelete, onRowClick }: DataTableProps) {
+  const t = useTranslations("dataTable");
   return (
     <div className="overflow-x-auto bg-surface rounded-xl border border-border">
       <table className="w-full text-sm">
@@ -25,7 +28,7 @@ export default function DataTable({ columns, data, onView, onDelete, onRowClick 
               </th>
             ))}
             {(onView || onDelete) && (
-              <th className="text-left px-6 py-3 font-semibold text-muted">Actions</th>
+              <th className="text-left px-6 py-3 font-semibold text-muted">{t("actions")}</th>
             )}
           </tr>
         </thead>
@@ -52,7 +55,7 @@ export default function DataTable({ columns, data, onView, onDelete, onRowClick 
                         onClick={(e) => { e.stopPropagation(); onView(row.id as string); }}
                         className="px-3 py-1.5 text-xs font-medium text-accent bg-accent/10 rounded-lg hover:bg-accent/20 cursor-pointer"
                       >
-                        View
+                        {t("view")}
                       </button>
                     )}
                     {onDelete && (
@@ -60,7 +63,7 @@ export default function DataTable({ columns, data, onView, onDelete, onRowClick 
                         onClick={(e) => { e.stopPropagation(); onDelete(row.id as string); }}
                         className="px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 cursor-pointer"
                       >
-                        Delete
+                        {t("delete")}
                       </button>
                     )}
                   </div>

@@ -22,6 +22,7 @@ const iconOptions = [
 export default function NewServicePage() {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
+  const [lang, setLang] = useState<"en" | "ar">("en");
 
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
@@ -43,6 +44,8 @@ export default function NewServicePage() {
       body: JSON.stringify({
         title: form.get("title"),
         description: form.get("description"),
+        titleAr: form.get("titleAr") || "",
+        descriptionAr: form.get("descriptionAr") || "",
         icon: form.get("icon") || "Building",
         order: Number(form.get("order")) || 0,
       }),
@@ -58,13 +61,40 @@ export default function NewServicePage() {
     <div>
       <h1 className="text-2xl font-bold text-heading mb-8">New Service</h1>
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-        <Input label="Title" name="title" required placeholder="e.g. Residential Construction" />
-        <Input label="Description" name="description" type="textarea" required placeholder="Describe this service..." />
-        <IconSelect
-          label="Icon"
-          name="icon"
-          options={iconOptions}
-        />
+        <div className="flex bg-border rounded-lg p-0.5 w-fit">
+          <button
+            type="button"
+            onClick={() => setLang("en")}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${
+              lang === "en" ? "bg-accent text-white" : "text-muted hover:text-foreground"
+            }`}
+          >
+            English
+          </button>
+          <button
+            type="button"
+            onClick={() => setLang("ar")}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${
+              lang === "ar" ? "bg-accent text-white" : "text-muted hover:text-foreground"
+            }`}
+          >
+            العربية
+          </button>
+        </div>
+
+        {lang === "en" ? (
+          <>
+            <Input label="Title" name="title" required placeholder="e.g. Residential Construction" />
+            <Input label="Description" name="description" type="textarea" required placeholder="Describe this service..." />
+          </>
+        ) : (
+          <>
+            <Input label="Title (Arabic)" name="titleAr" placeholder="العنوان بالعربية" />
+            <Input label="Description (Arabic)" name="descriptionAr" type="textarea" placeholder="الوصف بالعربية" />
+          </>
+        )}
+
+        <IconSelect label="Icon" name="icon" options={iconOptions} />
         <Input label="Order" name="order" type="number" placeholder="0" defaultValue="0" />
         <div className="flex gap-4">
           <Button type="submit" variant="primary" disabled={submitting}>
