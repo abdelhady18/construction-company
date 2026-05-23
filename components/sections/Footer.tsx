@@ -4,6 +4,8 @@ import { useTranslations, useLocale } from "next-intl";
 import Icon from "@/components/ui/Icon";
 import { useSettings } from "@/lib/SettingsContext";
 
+const footerLinks = ["home", "services", "projects", "about", "contact"] as const;
+
 export default function Footer() {
   const s = useSettings();
   const t = useTranslations("footer");
@@ -16,7 +18,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="min-w-0">
             <h3 className="font-serif text-xl tracking-wide text-accent">
-              {s.company_name || "Abu Suhaib Construction"}
+              {locale === "ar" && s.company_name_ar ? s.company_name_ar : s.company_name || "Abu Suhaib Construction"}
             </h3>
             {(locale === "ar" ? s.footer_about_ar : s.footer_about) && (
               <p className="text-white/40 text-sm mt-2 max-w-xs">
@@ -25,7 +27,7 @@ export default function Footer() {
             )}
           </div>
           <div className="flex items-center gap-8 min-w-0">
-            {(["home", "services", "projects", "about", "contact"] as const).map((href) => (
+            {footerLinks.map((href) => (
               <a
                 key={href}
                 href={`#${href}`}
@@ -48,7 +50,7 @@ export default function Footer() {
             </a>
           </div>
           <p className="text-white/20 text-xs">
-            {t("copyright", { year: new Date().getFullYear(), company: s.company_name || "BuildCo" })}
+            {t("copyright", { year: new Date().getFullYear(), company: locale === "ar" && s.company_name_ar ? s.company_name_ar : s.company_name || "Abu Suhaib Construction" })}
           </p>
         </div>
       </div>

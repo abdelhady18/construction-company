@@ -10,6 +10,7 @@ import Skeleton from "@/components/ui/Skeleton";
 interface Project {
   id: string;
   title: string;
+  titleAr: string;
   category: string | null;
   featured: boolean;
   createdAt: string;
@@ -19,6 +20,7 @@ export default function ProjectsPage() {
   const router = useRouter();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [lang, setLang] = useState<"en" | "ar">("en");
 
   useEffect(() => {
     const ac = new AbortController();
@@ -48,10 +50,10 @@ export default function ProjectsPage() {
   }
 
   const columns = [
-    { key: "title", label: "Title" },
-    { key: "category", label: "Category", render: (v: unknown) => v ? String(v) : "—" },
-    { key: "featured", label: "Featured", render: (v: unknown) => v ? "✅" : "—" },
-    { key: "createdAt", label: "Created", render: (v: unknown) => new Date(String(v)).toLocaleDateString() },
+    { key: "title", label: lang === "ar" ? "العنوان" : "Title", render: (_v: unknown, row: Record<string, unknown>) => lang === "ar" && row.titleAr ? String(row.titleAr) : String(row.title) },
+    { key: "category", label: lang === "ar" ? "التصنيف" : "Category", render: (v: unknown) => v ? String(v) : "—" },
+    { key: "featured", label: lang === "ar" ? "مميز" : "Featured", render: (v: unknown) => v ? "✅" : "—" },
+    { key: "createdAt", label: lang === "ar" ? "تاريخ الإضافة" : "Created", render: (v: unknown) => new Date(String(v)).toLocaleDateString() },
   ];
 
   return (
@@ -67,12 +69,18 @@ export default function ProjectsPage() {
           action={<Button variant="primary" href="/admin/projects/new">Add Project</Button>}
         />
       ) : (
-        <DataTable
-          columns={columns}
-          data={projects}
-          onView={(id) => router.push(`/admin/projects/${id}`)}
-          onDelete={handleDelete}
-        />
+        <>
+          <div className="flex bg-border rounded-lg p-0.5 w-fit mb-4">
+            <button type="button" onClick={() => setLang("en")} className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${lang === "en" ? "bg-accent text-white" : "text-muted hover:text-foreground"}`}>English</button>
+            <button type="button" onClick={() => setLang("ar")} className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${lang === "ar" ? "bg-accent text-white" : "text-muted hover:text-foreground"}`}>العربية</button>
+          </div>
+          <DataTable
+            columns={columns}
+            data={projects}
+            onView={(id) => router.push(`/admin/projects/${id}`)}
+            onDelete={handleDelete}
+          />
+        </>
       )}
     </div>
   );

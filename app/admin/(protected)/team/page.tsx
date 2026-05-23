@@ -11,6 +11,8 @@ interface TeamMember {
   id: string;
   name: string;
   role: string;
+  nameAr: string;
+  roleAr: string;
   imageUrl: string | null;
   order: number;
 }
@@ -19,6 +21,7 @@ export default function TeamPage() {
   const router = useRouter();
   const [members, setMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
+  const [lang, setLang] = useState<"en" | "ar">("en");
 
   useEffect(() => {
     const ac = new AbortController();
@@ -50,10 +53,11 @@ export default function TeamPage() {
   const columns = [
     {
       key: "imageUrl",
-      label: "Photo",
+      label: lang === "ar" ? "الصورة" : "Photo",
       render: (_v: unknown, row: Record<string, unknown>) => {
         const member = row as unknown as TeamMember;
-        const initials = member.name
+        const displayName = lang === "ar" && member.nameAr ? member.nameAr : member.name;
+        const initials = displayName
           .split(" ")
           .map((n) => n[0])
           .join("")
@@ -62,7 +66,7 @@ export default function TeamPage() {
         return member.imageUrl ? (
           <img
             src={member.imageUrl}
-            alt={member.name}
+            alt={displayName}
             className="w-10 h-10 rounded-full object-cover"
           />
         ) : (
@@ -72,9 +76,9 @@ export default function TeamPage() {
         );
       },
     },
-    { key: "name", label: "Name" },
-    { key: "role", label: "Role" },
-    { key: "order", label: "Order" },
+    { key: "name", label: lang === "ar" ? "الاسم" : "Name", render: (_v: unknown, row: Record<string, unknown>) => lang === "ar" && row.nameAr ? String(row.nameAr) : String(row.name) },
+    { key: "role", label: lang === "ar" ? "المسمى الوظيفي" : "Role", render: (_v: unknown, row: Record<string, unknown>) => lang === "ar" && row.roleAr ? String(row.roleAr) : String(row.role) },
+    { key: "order", label: lang === "ar" ? "الترتيب" : "Order" },
   ];
 
   return (
@@ -96,12 +100,18 @@ export default function TeamPage() {
           }
         />
       ) : (
-        <DataTable
-          columns={columns}
-          data={members}
-          onView={(id) => router.push(`/admin/team/${id}`)}
-          onDelete={handleDelete}
-        />
+        <>
+          <div className="flex bg-border rounded-lg p-0.5 w-fit mb-4">
+            <button type="button" onClick={() => setLang("en")} className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${lang === "en" ? "bg-accent text-white" : "text-muted hover:text-foreground"}`}>English</button>
+            <button type="button" onClick={() => setLang("ar")} className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${lang === "ar" ? "bg-accent text-white" : "text-muted hover:text-foreground"}`}>العربية</button>
+          </div>
+          <DataTable
+            columns={columns}
+            data={members}
+            onView={(id) => router.push(`/admin/team/${id}`)}
+            onDelete={handleDelete}
+          />
+        </>
       )}
     </div>
   );

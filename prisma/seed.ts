@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { prisma } from "../lib/prisma";
-import { defaultSettings } from "../lib/settings";
+import { defaultSettings } from "../lib/defaults";
 
 async function main() {
   for (const [key, value] of Object.entries(defaultSettings)) {

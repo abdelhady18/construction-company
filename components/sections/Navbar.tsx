@@ -2,18 +2,20 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import Button from "@/components/ui/Button";
 import ScrollProgress from "@/components/ui/ScrollProgress";
 import LocaleSwitcher from "@/components/ui/LocaleSwitcher";
 import { useSettings } from "@/lib/SettingsContext";
+
+const navLinks = ["home", "services", "projects", "about", "contact"] as const;
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const s = useSettings();
   const t = useTranslations("nav");
-  const links = ["home", "services", "projects", "about", "contact"] as const;
+  const locale = useLocale();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -39,11 +41,11 @@ export default function Navbar() {
                 scrolled ? "text-heading" : "text-white"
               }`}
             >
-              {s.company_name || "Abu Suhaib Construction"}
+              {locale === "ar" && s.company_name_ar ? s.company_name_ar : s.company_name || "Abu Suhaib Construction"}
             </Link>
 
             <div className="hidden md:flex items-center gap-8">
-              {links.map((href) => (
+              {navLinks.map((href) => (
                 <a
                   key={href}
                   href={`#${href}`}
@@ -81,7 +83,7 @@ export default function Navbar() {
 
           {mobileOpen && (
             <div className="md:hidden pb-4 space-y-2 border-t border-border pt-4">
-              {links.map((href) => (
+              {navLinks.map((href) => (
                 <a
                   key={href}
                   href={`#${href}`}

@@ -12,6 +12,8 @@ interface Service {
   id: string;
   title: string;
   description: string;
+  titleAr: string;
+  descriptionAr: string;
   icon: string;
   order: number;
   createdAt: string;
@@ -21,6 +23,7 @@ export default function ServicesPage() {
   const router = useRouter();
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
+  const [lang, setLang] = useState<"en" | "ar">("en");
 
   useEffect(() => {
     const ac = new AbortController();
@@ -61,9 +64,9 @@ export default function ServicesPage() {
         <Icon name={iconMap[String(v)] || "hardhat"} size={16} className="text-accent" />
       </div>
     ) },
-    { key: "title", label: "Title" },
-    { key: "description", label: "Description", render: (v: unknown) => <span className="line-clamp-2">{String(v)}</span> },
-    { key: "order", label: "Order" },
+    { key: "title", label: lang === "ar" ? "العنوان" : "Title", render: (_v: unknown, row: Record<string, unknown>) => lang === "ar" && row.titleAr ? String(row.titleAr) : String(row.title) },
+    { key: "description", label: lang === "ar" ? "الوصف" : "Description", render: (_v: unknown, row: Record<string, unknown>) => <span className="line-clamp-2">{lang === "ar" && row.descriptionAr ? String(row.descriptionAr) : String(row.description)}</span> },
+    { key: "order", label: lang === "ar" ? "الترتيب" : "Order" },
   ];
 
   return (
@@ -81,12 +84,18 @@ export default function ServicesPage() {
           action={<Button variant="primary" href="/admin/services/new">Add Service</Button>}
         />
       ) : (
-        <DataTable
-          columns={columns}
-          data={services}
-          onView={(id) => router.push(`/admin/services/${id}`)}
-          onDelete={handleDelete}
-        />
+        <>
+          <div className="flex bg-border rounded-lg p-0.5 w-fit mb-4">
+            <button type="button" onClick={() => setLang("en")} className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${lang === "en" ? "bg-accent text-white" : "text-muted hover:text-foreground"}`}>English</button>
+            <button type="button" onClick={() => setLang("ar")} className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors cursor-pointer ${lang === "ar" ? "bg-accent text-white" : "text-muted hover:text-foreground"}`}>العربية</button>
+          </div>
+          <DataTable
+            columns={columns}
+            data={services}
+            onView={(id) => router.push(`/admin/services/${id}`)}
+            onDelete={handleDelete}
+          />
+        </>
       )}
     </div>
   );
