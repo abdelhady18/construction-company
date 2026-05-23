@@ -131,6 +131,8 @@ exports.Prisma.ServiceScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
+  titleAr: 'titleAr',
+  descriptionAr: 'descriptionAr',
   icon: 'icon',
   imageUrl: 'imageUrl',
   order: 'order',
@@ -142,9 +144,23 @@ exports.Prisma.ProjectScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
+  titleAr: 'titleAr',
+  descriptionAr: 'descriptionAr',
   images: 'images',
   category: 'category',
   featured: 'featured',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TeamMemberScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  role: 'role',
+  nameAr: 'nameAr',
+  roleAr: 'roleAr',
+  imageUrl: 'imageUrl',
+  order: 'order',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -157,16 +173,6 @@ exports.Prisma.ContactMessageScalarFieldEnum = {
   message: 'message',
   read: 'read',
   createdAt: 'createdAt'
-};
-
-exports.Prisma.TeamMemberScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  role: 'role',
-  imageUrl: 'imageUrl',
-  order: 'order',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SiteSettingScalarFieldEnum = {
@@ -195,8 +201,8 @@ exports.Prisma.ModelName = {
   Admin: 'Admin',
   Service: 'Service',
   Project: 'Project',
-  ContactMessage: 'ContactMessage',
   TeamMember: 'TeamMember',
+  ContactMessage: 'ContactMessage',
   SiteSetting: 'SiteSetting'
 };
 

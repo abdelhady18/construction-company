@@ -15,25 +15,41 @@ model Admin {
 }
 
 model Service {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  icon        String   @default("Building2")
-  imageUrl    String?
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(uuid())
+  title        String
+  description  String
+  titleAr      String   @default("") @map("title_ar")
+  descriptionAr String  @default("") @map("description_ar")
+  icon         String   @default("Building2")
+  imageUrl     String?
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Project {
-  id          String   @id @default(uuid())
-  title       String
-  description String
-  images      String   @default("[]")
-  category    String?
-  featured    Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(uuid())
+  title        String
+  description  String
+  titleAr      String   @default("") @map("title_ar")
+  descriptionAr String  @default("") @map("description_ar")
+  images       String   @default("[]")
+  category     String?
+  featured     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model TeamMember {
+  id       String   @id @default(uuid())
+  name     String
+  role     String
+  nameAr   String   @default("") @map("name_ar")
+  roleAr   String   @default("") @map("role_ar")
+  imageUrl String?
+  order    Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ContactMessage {
@@ -44,16 +60,6 @@ model ContactMessage {
   message   String
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
-}
-
-model TeamMember {
-  id        String   @id @default(uuid())
-  name      String
-  role      String
-  imageUrl  String?
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model SiteSetting {
