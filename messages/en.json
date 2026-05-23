@@ -1,0 +1,158 @@
+{
+  "layout": {
+    "skipToContent": "Skip to content",
+    "title": "BuildCo - Construction Company",
+    "description": "From concept to completion, BuildCo delivers exceptional construction projects. Residential, commercial, and industrial construction services."
+  },
+  "locale": {
+    "en": "English",
+    "ar": "العربية",
+    "switch": "Switch language"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact",
+    "cta": "Get a Quote",
+    "toggleMenu": "Toggle menu"
+  },
+  "hero": {
+    "startProject": "Start Your Project",
+    "viewWork": "View Our Work",
+    "scroll": "Scroll",
+    "scrollAria": "Scroll down"
+  },
+  "services": {
+    "badge": "What We Do",
+    "heading": "Our Services",
+    "subtitle": "Comprehensive construction solutions tailored to your needs",
+    "emptyTitle": "No services yet",
+    "emptyDescription": "Services will appear here once added."
+  },
+  "projects": {
+    "badge": "Our Portfolio",
+    "heading": "Featured Projects",
+    "subtitle": "Showcasing our finest work across residential, commercial, and industrial sectors",
+    "loadingHeading": "Our Projects",
+    "emptyTitle": "No projects yet",
+    "emptyDescription": "Projects will appear here once added."
+  },
+  "about": {
+    "badge": "Who We Are",
+    "storyBadge": "Our Story",
+    "storyHeading": "Built on a Foundation of Trust",
+    "teamHeading": "Meet Our Team",
+    "stats": {
+      "years": "Years Experience",
+      "projects": "Projects Completed",
+      "team": "Expert Team",
+      "satisfaction": "Client Satisfaction"
+    }
+  },
+  "contact": {
+    "badge": "Get In Touch",
+    "form": {
+      "nameLabel": "Full Name",
+      "namePlaceholder": "John Doe",
+      "emailLabel": "Email",
+      "emailPlaceholder": "john@example.com",
+      "phoneLabel": "Phone",
+      "phonePlaceholder": "+1 (555) 123-4567",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Tell us about your project...",
+      "submit": "Send Message",
+      "sending": "Sending…",
+      "success": "Message sent successfully! We'll get back to you soon.",
+      "error": "Failed to send message. Please try again."
+    },
+    "info": {
+      "heading": "Contact Info",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Hours"
+    },
+    "consultation": {
+      "heading": "Free Consultation",
+      "text": "Schedule a free consultation with our team. We'll discuss your project requirements and provide a detailed estimate."
+    }
+  },
+  "footer": {
+    "copyright": "© {year} {company}. All rights reserved."
+  },
+  "businessHours": {
+    "closed": "Closed",
+    "to": "to",
+    "openAria": "{day} open time",
+    "closeAria": "{day} close time",
+    "closedLabel": "Closed",
+    "day": {
+      "Monday": "Monday",
+      "Tuesday": "Tuesday",
+      "Wednesday": "Wednesday",
+      "Thursday": "Thursday",
+      "Friday": "Friday",
+      "Saturday": "Saturday",
+      "Sunday": "Sunday"
+    },
+    "abbr": {
+      "Monday": "Mon",
+      "Tuesday": "Tue",
+      "Wednesday": "Wed",
+      "Thursday": "Thu",
+      "Friday": "Fri",
+      "Saturday": "Sat",
+      "Sunday": "Sun"
+    }
+  },
+  "phoneInput": {
+    "error": "Phone must be 10 digits after country code",
+    "placeholder": "+1 (555) 123-4567",
+    "clear": "Clear phone"
+  },
+  "imageLightbox": {
+    "galleryAria": "Image gallery",
+    "closeAria": "Close",
+    "prevAria": "Previous",
+    "nextAria": "Next",
+    "imageAlt": "Image {n}"
+  },
+  "dataTable": {
+    "actions": "Actions",
+    "view": "View",
+    "delete": "Delete"
+  },
+  "imageUploader": {
+    "label": "Images",
+    "noImages": "No images",
+    "uploading": "Uploading…",
+    "addImage": "Add Image",
+    "removeAria": "Remove image"
+  },
+  "messageModal": {
+    "title": "Message Details",
+    "name": "Name",
+    "date": "Date",
+    "email": "Email",
+    "phone": "Phone",
+    "status": "Status",
+    "read": "Read",
+    "new": "New",
+    "message": "Message",
+    "close": "Close",
+    "markAsRead": "Mark as Read",
+    "delete": "Delete",
+    "confirmDelete": "Delete this message?"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "services": "Services",
+    "projects": "Projects",
+    "messages": "Messages",
+    "team": "Team",
+    "settings": "Settings",
+    "signOut": "Sign Out"
+  }
+}

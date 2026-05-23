@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { Prata, Sora } from "next/font/google";
+import { Prata, Sora, Cairo } from "next/font/google";
+import { cookies } from "next/headers";
+import { NextIntlClientProvider } from "next-intl";
 import "./globals.css";
 import SessionProvider from "@/components/SessionProvider";
 import Providers from "./Providers";
@@ -8,35 +10,63 @@ const prata = Prata({
   variable: "--font-prata",
   subsets: ["latin"],
   weight: "400",
+  display: "swap",
 });
 
 const sora = Sora({
   variable: "--font-sora",
   subsets: ["latin"],
+  display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "BuildCo - Construction Company",
-  description:
-    "From concept to completion, BuildCo delivers exceptional construction projects. Residential, commercial, and industrial construction services.",
-};
+const cairo = Cairo({
+  variable: "--font-cairo",
+  subsets: ["arabic"],
+  display: "swap",
+});
 
-export default function RootLayout({
+async function resolveLocale(): Promise<string> {
+  const alCookie = (await cookies()).get("NEXT_LOCALE")?.value;
+  if (alCookie === "ar" || alCookie === "en") return alCookie;
+  return "en";
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await resolveLocale();
+  const messages = (await import(`../messages/${locale}.json`)).default;
+
+  return {
+    title: messages.layout.title,
+    description: messages.layout.description,
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await resolveLocale();
+  const messages = (await import(`../messages/${locale}.json`)).default;
+  const dir = locale === "ar" ? "rtl" : "ltr";
+
   return (
     <html
-      lang="en"
-      className={`${prata.variable} ${sora.variable} h-full antialiased`}
+      lang={locale}
+      dir={dir}
+      className={`${prata.variable} ${sora.variable} ${cairo.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded-lg focus:outline-none">
-          Skip to content
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:inset-inline-start-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-white focus:rounded-lg focus:outline-none"
+        >
+          {messages.layout.skipToContent}
         </a>
         <SessionProvider>
-          <Providers>{children}</Providers>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <Providers>{children}</Providers>
+          </NextIntlClientProvider>
         </SessionProvider>
       </body>
     </html>

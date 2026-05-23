@@ -28,6 +28,11 @@ body {
   font-family: var(--font-sans), sans-serif;
 }
 
+[dir="rtl"] {
+  --font-sans: var(--font-cairo);
+  --font-serif: var(--font-cairo);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;

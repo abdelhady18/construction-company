@@ -1,0 +1,158 @@
+{
+  "layout": {
+    "skipToContent": "تخطى إلى المحتوى",
+    "title": "بيلدكو - شركة المقاولات",
+    "description": "من المفهوم إلى الإنجاز، تقدم بيلدكو مشاريع بناء استثنائية. خدمات بناء سكنية وتجارية وصناعية."
+  },
+  "locale": {
+    "en": "English",
+    "ar": "العربية",
+    "switch": "تغيير اللغة"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "services": "خدماتنا",
+    "projects": "مشاريعنا",
+    "about": "من نحن",
+    "contact": "اتصل بنا",
+    "cta": "طلب عرض سعر",
+    "toggleMenu": "فتح القائمة"
+  },
+  "hero": {
+    "startProject": "ابدأ مشروعك",
+    "viewWork": "شاهد أعمالنا",
+    "scroll": "تمرير",
+    "scrollAria": "تمرير للأسفل"
+  },
+  "services": {
+    "badge": "ماذا نقدم",
+    "heading": "خدماتنا",
+    "subtitle": "حلول بناء شاملة مصممة خصيصاً لاحتياجاتك",
+    "emptyTitle": "لا توجد خدمات بعد",
+    "emptyDescription": "ستظهر الخدمات هنا بمجرد إضافتها."
+  },
+  "projects": {
+    "badge": "أعمالنا",
+    "heading": "مشاريع مميزة",
+    "subtitle": "نعرض أفضل أعمالنا في القطاعات السكنية والتجارية والصناعية",
+    "loadingHeading": "مشاريعنا",
+    "emptyTitle": "لا توجد مشاريع بعد",
+    "emptyDescription": "ستظهر المشاريع هنا بمجرد إضافتها."
+  },
+  "about": {
+    "badge": "من نحن",
+    "storyBadge": "قصتنا",
+    "storyHeading": "بُني على أساس من الثقة",
+    "teamHeading": "تعرف على فريقنا",
+    "stats": {
+      "years": "سنوات خبرة",
+      "projects": "مشروع مكتمل",
+      "team": "خبير في الفريق",
+      "satisfaction": "رضا العملاء"
+    }
+  },
+  "contact": {
+    "badge": "تواصل معنا",
+    "form": {
+      "nameLabel": "الاسم الكامل",
+      "namePlaceholder": "محمد أحمد",
+      "emailLabel": "البريد الإلكتروني",
+      "emailPlaceholder": "mohamed@example.com",
+      "phoneLabel": "رقم الهاتف",
+      "phonePlaceholder": "+20 100 000 0000",
+      "messageLabel": "الرسالة",
+      "messagePlaceholder": "أخبرنا عن مشروعك...",
+      "submit": "إرسال الرسالة",
+      "sending": "جارٍ الإرسال…",
+      "success": "تم إرسال الرسالة بنجاح! سنتواصل معك قريباً.",
+      "error": "فشل إرسال الرسالة. يرجى المحاولة مرة أخرى."
+    },
+    "info": {
+      "heading": "معلومات الاتصال",
+      "address": "العنوان",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "hours": "ساعات العمل"
+    },
+    "consultation": {
+      "heading": "استشارة مجانية",
+      "text": "احجز استشارة مجانية مع فريقنا. سنناقش متطلبات مشروعك ونقدم لك تقديراً مفصلاً."
+    }
+  },
+  "footer": {
+    "copyright": "© {year} {company}. جميع الحقوق محفوظة."
+  },
+  "businessHours": {
+    "closed": "مغلق",
+    "to": "إلى",
+    "openAria": "وقت افتتاح {day}",
+    "closeAria": "وقت إغلاق {day}",
+    "closedLabel": "مغلق",
+    "day": {
+      "Monday": "الاثنين",
+      "Tuesday": "الثلاثاء",
+      "Wednesday": "الأربعاء",
+      "Thursday": "الخميس",
+      "Friday": "الجمعة",
+      "Saturday": "السبت",
+      "Sunday": "الأحد"
+    },
+    "abbr": {
+      "Monday": "إثن",
+      "Tuesday": "ثلاث",
+      "Wednesday": "أربع",
+      "Thursday": "خميس",
+      "Friday": "جمعة",
+      "Saturday": "سبت",
+      "Sunday": "أحد"
+    }
+  },
+  "phoneInput": {
+    "error": "يجب أن يتكون رقم الهاتف من 10 أرقام بعد رمز الدولة",
+    "placeholder": "+20 100 000 0000",
+    "clear": "مسح رقم الهاتف"
+  },
+  "imageLightbox": {
+    "galleryAria": "معرض الصور",
+    "closeAria": "إغلاق",
+    "prevAria": "السابق",
+    "nextAria": "التالي",
+    "imageAlt": "صورة {n}"
+  },
+  "dataTable": {
+    "actions": "الإجراءات",
+    "view": "عرض",
+    "delete": "حذف"
+  },
+  "imageUploader": {
+    "label": "الصور",
+    "noImages": "لا توجد صور",
+    "uploading": "جارٍ الرفع…",
+    "addImage": "إضافة صورة",
+    "removeAria": "إزالة الصورة"
+  },
+  "messageModal": {
+    "title": "تفاصيل الرسالة",
+    "name": "الاسم",
+    "date": "التاريخ",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "status": "الحالة",
+    "read": "مقروءة",
+    "new": "جديدة",
+    "message": "الرسالة",
+    "close": "إغلاق",
+    "markAsRead": "تحديد كمقروءة",
+    "delete": "حذف",
+    "confirmDelete": "حذف هذه الرسالة؟"
+  },
+  "sidebar": {
+    "dashboard": "لوحة التحكم",
+    "services": "الخدمات",
+    "projects": "المشاريع",
+    "messages": "الرسائل",
+    "team": "الفريق",
+    "settings": "الإعدادات",
+    "signOut": "تسجيل الخروج"
+  }
+}
