@@ -6,6 +6,7 @@ import Input from "@/components/ui/Input";
 import PhoneInput from "@/components/ui/PhoneInput";
 import EmailInput from "@/components/ui/EmailInput";
 import BusinessHoursPicker from "@/components/ui/BusinessHoursPicker";
+import StatsPicker from "@/components/ui/StatsPicker";
 import Skeleton from "@/components/ui/Skeleton";
 
 const defaultSettings = {
@@ -29,6 +30,12 @@ const defaultSettings = {
     { day: "Friday", open: "08:00", close: "18:00", closed: false },
     { day: "Saturday", open: "09:00", close: "13:00", closed: false },
     { day: "Sunday", open: "09:00", close: "13:00", closed: true },
+  ]),
+  about_stats: JSON.stringify([
+    { value: "15+", label: "Years Experience" },
+    { value: "200+", label: "Projects Completed" },
+    { value: "50+", label: "Expert Team" },
+    { value: "98%", label: "Client Satisfaction" },
   ]),
   footer_about: "",
 };
@@ -61,6 +68,7 @@ const sections: { key: string; label: string; fields: FieldDef[] }[] = [
       { key: "about_subtitle", label: "Subtitle", type: "text", appears: "About section under heading" },
       { key: "about_story", label: "Story Paragraph 1", type: "textarea", appears: "About → Our Story" },
       { key: "about_story_2", label: "Story Paragraph 2", type: "textarea", appears: "About → Our Story" },
+      { key: "about_stats", label: "Stats", type: "text", appears: "About section stats row" },
     ],
   },
   {
@@ -152,6 +160,12 @@ export default function SettingsPage() {
                       />
                     ) : key === "contact_hours" ? (
                       <BusinessHoursPicker
+                        label={field.label}
+                        value={settings[key]}
+                        onChange={(v) => setSettings({ ...settings, [key]: v })}
+                      />
+                    ) : key === "about_stats" ? (
+                      <StatsPicker
                         label={field.label}
                         value={settings[key]}
                         onChange={(v) => setSettings({ ...settings, [key]: v })}

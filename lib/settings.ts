@@ -25,6 +25,12 @@ export const defaultSettings = {
     { day: "Saturday", open: "09:00", close: "13:00", closed: false },
     { day: "Sunday", open: "09:00", close: "13:00", closed: true },
   ]),
+  about_stats: JSON.stringify([
+    { value: "15+", label: "Years Experience" },
+    { value: "200+", label: "Projects Completed" },
+    { value: "50+", label: "Expert Team" },
+    { value: "98%", label: "Client Satisfaction" },
+  ]),
   footer_about:
     "Building excellence since 2010. Your trusted partner in construction projects of all sizes.",
 };
