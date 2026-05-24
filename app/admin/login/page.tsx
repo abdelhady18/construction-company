@@ -1,54 +1,45 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { getCsrfToken } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState("");
-  const [csrfToken, setCsrfToken] = useState("");
-
-  useEffect(() => {
-    getCsrfToken().then(setCsrfToken);
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setError("");
+      setLoading(true);
 
       const form = e.currentTarget;
-      const data = new FormData(form);
-      data.set("csrfToken", csrfToken);
-      data.set("callbackUrl", "/admin/dashboard");
-      data.set("json", "true");
+      const email = form.email.value;
+      const password = form.password.value;
 
       try {
-        const res = await fetch("/api/auth/callback/credentials", {
-          method: "POST",
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: new URLSearchParams(data as unknown as Record<string, string>),
-          redirect: "manual",
+        const result = await signIn("credentials", {
+          email,
+          password,
+          redirect: false,
         });
 
-        if (res.type === "opaqueredirect" || res.status === 302 || res.status === 303) {
+        if (result?.ok) {
           router.push("/admin/dashboard");
         } else {
-          const body = await res.json().catch(() => ({}));
-          if (body.url) {
-            router.push("/admin/dashboard");
-          } else {
-            setError("Invalid email or password");
-          }
+          setError("Invalid email or password");
         }
       } catch {
         setError("Invalid email or password");
+      } finally {
+        setLoading(false);
       }
     },
-    [csrfToken, router]
+    [router]
   );
 
   return (
@@ -58,10 +49,9 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <Input label="Email" name="email" type="email" required placeholder="admin@buildco.com" />
           <Input label="Password" name="password" type="password" required placeholder="••••••••" />
-          <input type="hidden" name="csrfToken" value={csrfToken} />
           {error && <p className="text-red-600 text-sm">{error}</p>}
-          <Button type="submit" variant="primary" className="w-full">
-            Sign In
+          <Button type="submit" variant="primary" disabled={loading} className="w-full">
+            {loading ? "Signing in..." : "Sign In"}
           </Button>
         </form>
       </div>

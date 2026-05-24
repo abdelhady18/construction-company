@@ -1,15 +1,13 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import type { NextAuthRequest } from "next-auth/lib";
 
-export default async function middleware(req: NextRequest) {
+export default auth((req: NextAuthRequest) => {
   const isAdminRoute = req.nextUrl.pathname.startsWith("/admin");
   const isLoginPage = req.nextUrl.pathname === "/admin/login";
 
-  if (isAdminRoute && !isLoginPage) {
-    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
-    if (!token) {
-      return NextResponse.redirect(new URL("/admin/login", req.url));
-    }
+  if (isAdminRoute && !isLoginPage && !req.auth) {
+    return NextResponse.redirect(new URL("/admin/login", req.url));
   }
 
   const rawCookie = req.headers.get("cookie") || "";
@@ -27,7 +25,7 @@ export default async function middleware(req: NextRequest) {
   }
 
   return response;
-}
+});
 
 export const config = {
   matcher: ["/", "/admin/:path*", "/api/upload/:path*"],
