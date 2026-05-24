@@ -47,5 +47,9 @@
     "tsx": "^4.22.3",
     "typescript": "^5",
     "vitest": "^4.1.6"
+  },
+  "optionalDependencies": {
+    "@next/swc-linux-x64-gnu": "16.2.6",
+    "@next/swc-linux-x64-musl": "16.2.6"
   }
 }
