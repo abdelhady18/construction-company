@@ -31,10 +31,9 @@ export default function LoginPage() {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
           body: new URLSearchParams(data as unknown as Record<string, string>),
-          redirect: "manual",
         });
 
-        if (res.type === "opaqueredirect" || res.status === 302 || res.status === 303) {
+        if (res.ok) {
           router.push("/admin/dashboard");
         } else {
           const body = await res.json().catch(() => ({}));
